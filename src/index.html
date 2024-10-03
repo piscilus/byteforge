@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<title>Byte Forge</title>
+<meta charset="UTF-8">
+<meta name="author" content="Julian Krämer">
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="./js/byteforge.js"></script>
+<link rel="stylesheet" href="./css/style.css">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<header>
+<h1>BYTE FORGE</h1>
+<p><strong></strong></p>
+<div class="alert">
+<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+WORK IN PROGRESS!
+</div>
+</header>
+<main>
+<form accept-charset="utf-8" target="_self">
+<fieldset>
+<legend>Byte Array</legend>
+<table>
+<tr>
+<td><label for="bcByteArrayHex">Hexadecimal</label> <span class="bcByteArrayLength"></span></td>
+<td><label for="bcByteArrayDec">Decimal</label> <span class="bcByteArrayLength"></span></td>
+</tr>
+<tr>
+<td><textarea id="bcByteArrayHex" rows="4"></textarea></td>
+<td><textarea id="bcByteArrayDec" rows="4"></textarea></td>
+</tr>
+<tr>
+<td><label for="bcByteArrayOct">Octal</label> <span class="bcByteArrayLength"></span></td>
+<td><label for="bcByteArrayBin">Binary</label> <span class="bcByteArrayLength"></span></td>
+</tr>
+<tr>
+<td><textarea id="bcByteArrayOct" rows="4"></textarea></td>
+<td><textarea id="bcByteArrayBin" rows="4"></textarea></td>
+</tr>
+<tr><td colspan="2"><label>Choose Byte Array format:</label><br>
+<input type="checkbox" id="bcByteArrayPrefix" value="0x">
+<label for="bcByteArrayPrefix">Prefix (0x/0d/0o/0b)</label><br>
+<input type="checkbox" id="bcByteArraySpace" value="space">
+<label for="bcByteArraySpace">Blank separator</label><br>
+<input type="checkbox" id="bcByteArrayComma" value="comma">
+<label for="bcByteArrayComma">Comma separator</label><br>
+<!-- <input type="checkbox" id="bcByteArraySemicolon" value="semicolon">
+<label for="bcByteArraySemicolon">Semicolon separator</label><br> -->
+</td></tr>
+</table>
+</fieldset>
+<fieldset>
+<legend>String</legend>
+<table>
+<tr>
+<td><label for="bcStringASCII" title="A string coded American Standard Code for Information Interchange (ASCII).">ASCII</label> <span id="bcStringASCIILength"></span></td>
+<td><label for="bcStringUTF8">UTF-8</label> <span id="bcStringUTF8Length"></span></td>
+</tr>
+<tr>
+<td><textarea id="bcStringASCII" type="text" rows="5"></textarea></td>
+<td><textarea id="bcStringUTF8"  type="text" rows="5"></textarea></td>
+</tr>
+<tr><td colspan="2"><label for="bcStringSubstituteChar">Non-printable substitute</label></td></tr>
+<tr><td colspan="2"><input id="bcStringSubstituteChar" type="text" maxlength="1" value="?"></td></tr>
+</table>
+</fieldset>
+<fieldset>
+<legend>Float</legend>
+<table>
+<tr>
+<td><label for="bcFloat32" title="A 32-bit single precision floating point number according to IEEE 754."">32-bit</label></td>
+<td><label for="bcFloat64" title="A 64-bit double precision floating point number according to IEEE 754.">64-bit</label></td>
+</tr>
+<tr>
+<td><textarea id="bcFloat32" rows="5"></textarea></td>
+<td><textarea id="bcFloat64" rows="5"></textarea></td>
+</tr>
+<tr><td colspan="2">
+<label for="bcEndiannessFloat">Endianness:</label>
+<select id="bcEndiannessFloat">
+<option value="big" selected>big-endian</option>
+<option value="little">little-endian</option>
+</select><br>
+</td></tr>
+</table>
+</fieldset>
+<fieldset>
+<legend>Integer</legend>
+<table>
+<tr>
+<td colspan="4">Unsigned</td>
+<td colspan="4">Signed</td>
+</tr>
+<tr>
+<td><label for="bcUint8">8-bit</label></td>
+<td><label for="bcUint16">16-bit</label></td>
+<td><label for="bcUint32">32-bit</label></td>
+<td><label for="bcUint64">64-bit</label></td>
+<td><label for="bcInt8">8-bit</label></td>
+<td><label for="bcInt16">16-bit</label></td>
+<td><label for="bcInt32">32-bit</label></td>
+<td><label for="bcInt64">64-bit</label></td>
+</tr>
+<tr>
+<td><textarea id="bcUint8"  rows="5"></textarea></td>
+<td><textarea id="bcUint16" rows="5"></textarea></td>
+<td><textarea id="bcUint32" rows="5"></textarea></td>
+<td><textarea id="bcUint64" rows="5"></textarea></td>
+<td><textarea id="bcInt8"   rows="5"></textarea></td>
+<td><textarea id="bcInt16"  rows="5"></textarea></td>
+<td><textarea id="bcInt32"  rows="5"></textarea></td>
+<td><textarea id="bcInt64"  rows="5"></textarea></td>
+</tr>
+<tr><td colspan="8">
+<label for="bcEndiannessInt">Endianness:</label>
+<select id="bcEndiannessInt">
+<option value="big" selected>big-endian</option>
+<option value="little">little-endian</option>
+</select><br>
+</td></tr>
+</table>
+</fieldset>
+<fieldset>
+<legend>Controls & Console</legend>
+<textarea rows="6" id="bcConsole" readonly></textarea>
+<input type="reset" value="Clear All">
+</fieldset>
+</form>
+</main>
+<footer>
+<p>The favicon is based on <a href="https://www.svgrepo.com/svg/320332/anvil" rel="external">Anvil SVG Vector</a> by game-icons.net (CC Attribution License)</p>
+<p>Source code of this website: <a href="https://github.com/piscilus/byteforge" rel="external">github.com/piscilus/byteforge</a></p>
+<p>Byte Forge &copy; Copyright 2024 Julian Krämer</p>
+</footer>
+</body>
+</html>

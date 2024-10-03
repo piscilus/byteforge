@@ -1,0 +1,120 @@
+html {
+    margin:0;
+}
+
+[data-theme="light"] {
+    --color-bg: #ffffff;
+    --color-fg: #000000;
+    --color-bg2: #eee;
+    --color-bghl: #feffbe;
+    --color-bgro: #ddd;
+    --color-border: #bbb;
+}
+
+[data-theme="dark"] {
+    --color-bg: #000000;
+    --color-fg: #ffffff;
+    --color-bg2: #222;
+    --color-bghl: #1d1d0c;
+    --color-bgro: #333;
+    --color-border: #111;
+}
+
+body {
+    margin:0;
+    font-family: sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+}
+
+header {
+    padding: 1rem;
+}
+
+h1 {
+    margin: 0;
+    text-decoration: overline underline;
+}
+
+footer {
+    padding: 1rem;
+    font-size: 0.7rem;
+}
+
+table {
+    width: 100%;
+}
+
+label {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.bcByteArrayLength, #bcStringASCIILength, #bcStringUTF8Length {
+    font-size: 0.7rem;
+}
+
+input, select, textarea {
+    font-family: monospace;
+    font-size: 0.9rem;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg2);
+    border-radius: 4px;
+}
+
+fieldset {
+    background-color: var(--color-bg2);
+    border: 1px solid var(--color-border);
+    margin: 5px;
+}
+
+legend {
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg2);
+}
+
+input[type=text] {
+    box-sizing: border-box;
+    outline: none;
+}
+
+input[type=text]:read-write:focus {
+    background-color: var(--color-bghl);
+}
+
+textarea {
+    box-sizing: border-box;
+    outline: none;
+    resize: vertical;
+    width: 100%;
+    font-size: 0.8rem;
+}
+
+textarea:focus {
+    background-color: var(--color-bghl);
+}
+
+label:hover {
+    color: red;
+}
+
+.alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
