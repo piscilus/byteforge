@@ -1,0 +1,22 @@
+{
+  "name": "byteforge",
+  "version": "0.1.0-alpha",
+  "description": "n/a",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piscilus/byteforge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/piscilus/byteforge/issues"
+  },
+  "homepage": "https://github.com/piscilus/byteforge",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
