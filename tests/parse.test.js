@@ -12,8 +12,15 @@ describe('parseByteArrayHex', () => {
         };
     });
 
+    test('parses valid hex string with different formats  and returns correct Uint8Array', () => {
+        mockInput.value = "0x080A00,6,B FF";
+        const output = parseByteArrayHex(mockInput);
+        expect(output).toEqual({ success: true, result: new Uint8Array([8, 10, 0, 6, 11, 255]) });
+        expect(mockInput.style.color).toBe('');
+    });
+
     test('parses valid hex string and returns correct Uint8Array', () => {
-        mockInput.value = '0x01 0xFF 0xA5';
+        mockInput.value = "0x01 0xFF 0xA5";
         const output = parseByteArrayHex(mockInput);
         expect(output).toEqual({ success: true, result: new Uint8Array([1, 255, 165]) });
         expect(mockInput.style.color).toBe('');
@@ -36,8 +43,15 @@ describe('parseByteArrayHex', () => {
     test('returns error for "0" hex string', () => {
         mockInput.value = '0';
         const output = parseByteArrayHex(mockInput);
-        expect(output.success).toEqual(false);
-        expect(mockInput.style.color).toBe('red');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0]) });
+        expect(mockInput.style.color).toBe('');
+    });
+
+    test('returns error for "A" hex string', () => {
+        mockInput.value = 'A';
+        const output = parseByteArrayHex(mockInput);
+        expect(output).toEqual({ success: true, result: new Uint8Array([10]) });
+        expect(mockInput.style.color).toBe('');
     });
 
     test('returns error for invalid hex character', () => {
@@ -75,6 +89,13 @@ describe('parseByteArrayDec', () => {
         };
     });
 
+    test('parses valid dec string with different formats  and returns correct Uint8Array', () => {
+        mockInput.value = "0d8 009001,6,255 123";
+        const output = parseByteArrayDec(mockInput);
+        expect(output).toEqual({ success: true, result: new Uint8Array([8, 9, 1, 6, 255, 123]) });
+        expect(mockInput.style.color).toBe('');
+    });
+
     test('parses valid dec string and returns correct Uint8Array', () => {
         mockInput.value = '0d01 0d255 0d165';
         const output = parseByteArrayDec(mockInput);
@@ -92,12 +113,26 @@ describe('parseByteArrayDec', () => {
     test('returns error for odd-length dec string', () => {
         mockInput.value = '0d1';
         const output = parseByteArrayDec(mockInput);
-        expect(output.success).toEqual(false);
-        expect(mockInput.style.color).toBe('red');
+        expect(output).toEqual({ success: true, result: new Uint8Array([1]) });
+        expect(mockInput.style.color).toBe('');
     });
 
     test('returns error for "0" dec string', () => {
         mockInput.value = '0';
+        const output = parseByteArrayDec(mockInput);
+        expect(output).toEqual({ success: true, result: new Uint8Array([0]) });
+        expect(mockInput.style.color).toBe('');
+    });
+
+    test('returns error for "0" dec string', () => {
+        mockInput.value = '255';
+        const output = parseByteArrayDec(mockInput);
+        expect(output).toEqual({ success: true, result: new Uint8Array([255]) });
+        expect(mockInput.style.color).toBe('');
+    });
+
+    test('returns error for invalid dec value', () => {
+        mockInput.value = '256';
         const output = parseByteArrayDec(mockInput);
         expect(output.success).toEqual(false);
         expect(mockInput.style.color).toBe('red');

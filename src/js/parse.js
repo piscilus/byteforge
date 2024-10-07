@@ -1,62 +1,69 @@
 function parseByteArrayHex(input) {
-    inputValue = input.value.replace(/0x/g, '')
-                    .replace(/[\s,]+/g, '');
-    if (inputValue.length === 0){
-        input.style.color = '';
-        return { success: true, result: new Uint8Array()};
+    if (typeof input.value !== 'string') {
+        throw new TypeError('Input must be a string!');
     }
-    if (inputValue.length % 2 !== 0) {
-        input.style.color = 'red';
-        return { success: false, message: 'Invalid hex string: length must be even' };
-    }
-    let result = new Array();
-    for (let i = 0; i < inputValue.length; i += 2) {
-        let hexPair = inputValue.substr(i, 2);
-        if (!/^[0-9a-fA-F]{2}$/.test(hexPair)) {
+    const splitRegex = /(?:0x|,|\s)+/i;
+    const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
+    const result = [];
+    const hexRegex = /^[0-9a-fA-F]+$/;
+    for (const token of tokens) {
+        if (!hexRegex.test(token)) {
             input.style.color = 'red';
-            return { success: false, message: 'Invalid hex character' };
+            return { success: false, message: `Invalid hex characters in token: "${token}"`};
         }
-        let charCode = parseInt(hexPair, 16);
-        result.push(charCode);
+        if (token.length === 1 || token.length === 2) {
+            const byte = parseInt(token, 16);
+            result.push(byte);
+        } else {
+            if (token.length % 2 !== 0) {
+                input.style.color = 'red';
+                return { success: false, message: `Invalid concatenated hex string (must have even number of digits): "${token}"`};
+            }
+            for (let i = 0; i < token.length; i += 2) {
+                const byteStr = token.slice(i, i + 2);
+                const byte = parseInt(byteStr, 16);
+                result.push(byte);
+            }
+        }
     }
     input.style.color = '';
     return { success: true, result: new Uint8Array(result) };
 }
 
 function parseByteArrayDec(input) {
-    let inputValue = input.value.replace(/0d/g, '').trim();
-    if (inputValue.length === 0) {
-        input.style.color = '';
-        return { success: true, result: new Uint8Array() };
+    if (typeof input.value !== 'string') {
+        throw new TypeError('Input must be a string!');
     }
-    let result = [];
-    if (inputValue.includes(' ') || inputValue.includes(',')) {
-        let segments = inputValue.split(/[\s,]+/);
-        for (let segment of segments) {
-            if (!/^[0-9]+$/.test(segment)) {
-                input.style.color = 'red';
-                return { success: false, message: 'Invalid input: only decimal digits (0-9) are allowed' };
-            }
-            let byteValue = parseInt(segment, 10);
-            if (byteValue > 255) {
-                input.style.color = 'red';
-                return { success: false, message: 'Invalid decimal value: must not exceed 255' };
-            }
-            result.push(byteValue);
-        }
-    } else {
-        if (!/^[0-9]+$/.test(inputValue)) {
+    const splitRegex = /(?:0d|,|\s)+/i;
+    const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
+    const result = [];
+    const decRegex = /^[0-9]+$/;
+    for (const token of tokens) {
+        if (!decRegex.test(token)) {
             input.style.color = 'red';
-            return { success: false, message: 'Invalid input: only decimal digits (0-9) are allowed' };
+            return { success: false, message: `Invalid dec characters in token: "${token}"`};
         }
-        for (let i = 0; i < inputValue.length; i += 3) {
-            let decStr = inputValue.substr(i, Math.min(3, inputValue.length - i));
-            let byteValue = parseInt(decStr, 10);
-            if (byteValue > 255) {
+        if (token.length === 1 || token.length === 2 || token.length === 3) {
+            const byte = parseInt(token, 10);
+            if (byte > 255) {
                 input.style.color = 'red';
-                return { success: false, message: 'Invalid decimal value: must not exceed 255' };
+                return { success: false, message: `Decimal segment must be 0..255: "${token}"`};
             }
-            result.push(byteValue);
+            result.push(byte);
+        } else {
+            if (token.length % 3 !== 0) {
+                input.style.color = 'red';
+                return { success: false, message: `Invalid concatenated dec string (must have a multiple of 3 digits): "${token}"`};
+            }
+            for (let i = 0; i < token.length; i += 3) {
+                const byteStr = token.slice(i, i + 3);
+                const byte = parseInt(byteStr, 10);
+                if (byte > 255) {
+                    input.style.color = 'red';
+                    return { success: false, message: `Decimal segment must be 0..255: "${token}"`};
+                }
+                result.push(byte);
+            }
         }
     }
     input.style.color = '';
