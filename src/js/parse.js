@@ -71,39 +71,39 @@ function parseByteArrayDec(input) {
 }
 
 function parseByteArrayOct(input) {
-    let inputValue = input.value.replace(/0o/g, '').trim();
-    if (inputValue.length === 0) {
-        input.style.color = '';
-        return { success: true, result: new Uint8Array() };
+    if (typeof input.value !== 'string') {
+        throw new TypeError('Input must be a string!');
     }
-    let result = [];
-    if (inputValue.includes(' ') || inputValue.includes(',')) {
-        let segments = inputValue.split(/[\s,]+/);
-        for (let segment of segments) {
-            if (!/^[0-7]+$/.test(segment)) {
-                input.style.color = 'red';
-                return { success: false, message: 'Invalid input: only octal digits (0-7) are allowed' };
-            }
-            let byteValue = parseInt(segment, 8);
-            if (byteValue > 255) {
-                input.style.color = 'red';
-                return { success: false, message: 'Invalid octal value: must not exceed 255' };
-            }
-            result.push(byteValue);
-        }
-    } else {
-        if (!/^[0-7]+$/.test(inputValue)) {
+    const splitRegex = /(?:0o|,|\s)+/i;
+    const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
+    const result = [];
+    const octRegex = /^[0-7]+$/;
+    for (const token of tokens) {
+        if (!octRegex.test(token)) {
             input.style.color = 'red';
-            return { success: false, message: 'Invalid input: only octal digits (0-7) are allowed' };
+            return { success: false, message: `Invalid oct characters in token: "${token}"`};
         }
-        for (let i = 0; i < inputValue.length; i += 3) {
-            let octalStr = inputValue.substr(i, Math.min(3, inputValue.length - i));
-            let byteValue = parseInt(octalStr, 8);
-            if (byteValue > 255) {
+        if (token.length === 1 || token.length === 2 || token.length === 3) {
+            const byte = parseInt(token, 8);
+            if (byte > 255) {
                 input.style.color = 'red';
-                return { success: false, message: 'Invalid octal value: must not exceed 255' };
+                return { success: false, message: `Octal segment must be 0..255: "${token}"`};
             }
-            result.push(byteValue);
+            result.push(byte);
+        } else {
+            if (token.length % 3 !== 0) {
+                input.style.color = 'red';
+                return { success: false, message: `Invalid concatenated oct string (must have a multiple of 3 digits): "${token}"`};
+            }
+            for (let i = 0; i < token.length; i += 3) {
+                const byteStr = token.slice(i, i + 3);
+                const byte = parseInt(byteStr, 8);
+                if (byte > 255) {
+                    input.style.color = 'red';
+                    return { success: false, message: `Octal segment must be 0..255: "${token}"`};
+                }
+                result.push(byte);
+            }
         }
     }
     input.style.color = '';
@@ -111,39 +111,34 @@ function parseByteArrayOct(input) {
 }
 
 function parseByteArrayBin(input) {
-    let inputValue = input.value.replace(/0b/g, '')
-                        .replace(/[\s,]+/g, '');
-
-    if (inputValue.length === 0) {
-        input.style.color = '';
-        return { success: true, result: new Uint8Array() };
+    if (typeof input.value !== 'string') {
+        throw new TypeError('Input must be a string!');
     }
-
-    if (!/^[01]+$/.test(inputValue)) {
-        input.style.color = 'red';
-        return { success: false, message: 'Invalid input: only binary digits (0 or 1) are allowed' };
-    }
-
-    if (inputValue.length % 8 !== 0) {
-        input.style.color = 'red';
-        return { success: false, message: 'Invalid binary string: length must be a multiple of 8' };
-    }
-
-    let result = [];
-    for (let i = 0; i < inputValue.length; i += 8) {
-        let byteStr = inputValue.substr(i, 8);
-        let byteValue = parseInt(byteStr, 2);
-
-        if (isNaN(byteValue)) {
+    const splitRegex = /(?:0b|,|\s)+/i;
+    const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
+    const result = [];
+    const binRegex = /^[0-1]+$/;
+    for (const token of tokens) {
+        if (!binRegex.test(token)) {
             input.style.color = 'red';
-            return { success: false, message: 'Invalid binary character' };
-        } else {
-            input.style.color = '';
+            return { success: false, message: `Invalid bin characters in token: "${token}"`};
         }
-
-        result.push(byteValue);
+        if (token.length >= 1 && token.length <= 8) {
+            const byte = parseInt(token, 2);
+            result.push(byte);
+        } else {
+            if (token.length % 8 !== 0) {
+                input.style.color = 'red';
+                return { success: false, message: `Invalid concatenated bin string (must have a multiple of 8 digits): "${token}"`};
+            }
+            for (let i = 0; i < token.length; i += 8) {
+                const byteStr = token.slice(i, i + 8);
+                const byte = parseInt(byteStr, 2);
+                result.push(byte);
+            }
+        }
     }
-
+    input.style.color = '';
     return { success: true, result: new Uint8Array(result) };
 }
 
