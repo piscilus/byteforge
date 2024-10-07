@@ -6,6 +6,8 @@
 <meta name="author" content="Julian Krämer">
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="./js/compose.js"></script>
+<script src="./js/parse.js"></script>
 <script src="./js/byteforge.js"></script>
 <link rel="stylesheet" href="./css/style.css">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
@@ -60,8 +62,8 @@ WORK IN PROGRESS!
 <td><label for="bcStringUTF8">UTF-8</label> <span id="bcStringUTF8Length"></span></td>
 </tr>
 <tr>
-<td><textarea id="bcStringASCII" type="text" rows="5"></textarea></td>
-<td><textarea id="bcStringUTF8"  type="text" rows="5"></textarea></td>
+<td><textarea id="bcStringASCII" rows="5"></textarea></td>
+<td><textarea id="bcStringUTF8"  rows="5"></textarea></td>
 </tr>
 <tr><td colspan="2"><label for="bcStringSubstituteChar">Non-printable substitute</label></td></tr>
 <tr><td colspan="2"><input id="bcStringSubstituteChar" type="text" maxlength="1" value="?"></td></tr>
@@ -71,7 +73,7 @@ WORK IN PROGRESS!
 <legend>Float</legend>
 <table>
 <tr>
-<td><label for="bcFloat32" title="A 32-bit single precision floating point number according to IEEE 754."">32-bit</label></td>
+<td><label for="bcFloat32" title="A 32-bit single precision floating point number according to IEEE 754.">32-bit</label></td>
 <td><label for="bcFloat64" title="A 64-bit double precision floating point number according to IEEE 754.">64-bit</label></td>
 </tr>
 <tr>
