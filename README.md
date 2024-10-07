@@ -3,6 +3,10 @@
 The **Byte Forge** is a web-based tool to convert between different byte array
 formats and data types.
 
+[![CI](https://github.com/piscilus/byteforge/actions/workflows/ci.yml/badge.svg)](https://github.com/piscilus/byteforge/actions/workflows/ci.yml)
+![GitHub License](https://img.shields.io/github/license/piscilus/byteforge)
+
+
 ## To do
 
 - [ ] max length for the form elements?
@@ -15,3 +19,5 @@ formats and data types.
 - [ ] endianness for byte array (swap)
 - [ ] error messages / logging
 - [ ] final layout (HTML/CSS)
+  - [ ] dark mode
+- [ ] noscript HTML tag
