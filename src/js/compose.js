@@ -130,6 +130,9 @@ function composeFloat64(input, endianness) {
 }
 
 function composeInt8(input, sign) {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     let result = [];
     for (let i = 0; i < input.length; i++) {
         let value = input[i];
@@ -144,6 +147,9 @@ function composeInt8(input, sign) {
 }
 
 function composeInt16(input, endianness, sign) {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     if (input.length % 2 !== 0) {
         return { success: false, message: 'Insufficient data to calculate 16-bit integer!' };
     }
@@ -166,6 +172,9 @@ function composeInt16(input, endianness, sign) {
 }
 
 function composeInt32(input, endianness, sign) {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     if (input.length % 4 !== 0) {
         return { success: false, message: 'Insufficient data to calculate 32-bit  integer!' };
     }
@@ -191,6 +200,9 @@ function composeInt32(input, endianness, sign) {
 }
 
 function composeInt64(input, endianness, sign) {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     if (input.length % 8 !== 0) {
         return { success: false, message: 'Insufficient data to calculate 64-bit integer!' };
     }
@@ -218,7 +230,6 @@ function composeInt64(input, endianness, sign) {
     return { success: true, result: result.join('\n') };
 }
 
-// Export the function for testing and external use
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = {
         composeASCIIString,

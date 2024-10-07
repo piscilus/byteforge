@@ -39,12 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             element: document.getElementById('bcStringASCII'),
-            parse: (val) => parseASCIIString(val),
+            parse: (val) => parseStringASCII(val),
             format: (val) => composeASCIIString(val, stringSubstituteChar),
         },
         {
             element: document.getElementById('bcStringUTF8'),
-            parse: null,
+            parse: (val) => parseStringUTF8(val),
             format: (val) => composeStringUTF8(val, stringSubstituteChar),
         },
         {
@@ -59,43 +59,43 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             element: document.getElementById('bcUint8'),
-            parse: null,
+            parse: (val) => parseInt8(val, false),
             format: (val) => composeInt8(val, 0),
         },
         {
             element: document.getElementById('bcUint16'),
-            parse: null,
-            format: (val) => composeInt16(val, endiannessInt, 0),
+            parse: (val) => parseInt16(val, endiannessInt, false),
+            format: (val) => composeInt16(val, endiannessInt, false),
         },
         {
             element: document.getElementById('bcUint32'),
             parse: null,
-            format: (val) => composeInt32(val, endiannessInt, 0),
+            format: (val) => composeInt32(val, endiannessInt, false),
         },
         {
             element: document.getElementById('bcUint64'),
             parse: null,
-            format: (val) => composeInt64(val, endiannessInt, 0),
+            format: (val) => composeInt64(val, endiannessInt, false),
         },
         {
             element: document.getElementById('bcInt8'),
-            parse: null,
-            format: (val) => composeInt8(val, 1),
+            parse: (val) => parseInt8(val, true),
+            format: (val) => composeInt8(val, true),
         },
         {
             element: document.getElementById('bcInt16'),
-            parse: null,
-            format: (val) => composeInt16(val, endiannessInt, 1),
+            parse: (val) => parseInt16(val, endiannessInt, true),
+            format: (val) => composeInt16(val, endiannessInt, true),
         },
         {
             element: document.getElementById('bcInt32'),
             parse: null,
-            format: (val) => composeInt32(val, endiannessInt, 1),
+            format: (val) => composeInt32(val, endiannessInt, true),
         },
         {
             element: document.getElementById('bcInt64'),
             parse: null,
-            format: (val) => composeInt64(val, endiannessInt, 1),
+            format: (val) => composeInt64(val, endiannessInt, true),
         }
     ];
 
@@ -139,7 +139,15 @@ document.addEventListener('DOMContentLoaded', () => {
         inputConfig.element.addEventListener('input', () => {
         if (isUpdating || !inputConfig.parse) return;
         const parsedValue = inputConfig.parse(inputConfig.element);
-        if (!parsedValue.success) return;
+        if (!parsedValue.success) {
+            inputConfig.element.style.color = 'red';
+            if (parsedValue.message)
+                bcConsole.value += parsedValue.message + '\n';
+            return;
+        }
+        else {
+            inputConfig.element.style.color = '';
+        }
         centralArrayOfInt = parsedValue.result;
         updateAllInputs(index);
         });
@@ -150,13 +158,12 @@ document.addEventListener('DOMContentLoaded', () => {
         bcConsole.value = '';
         inputsConfig.forEach((inputConfig, index) => {
             if (index === excludeIndex || !inputConfig.format) return;
-
             out = inputConfig.format(centralArrayOfInt);
             if (out.success) {
                 inputConfig.element.value = out.result;
             } else {
-                if (out.message)
-                    bcConsole.value += out.message + '\n';
+                // if (out.message)
+                //    bcConsole.value += out.message + '\n';
                 inputConfig.element.value = '';
             }
         });
