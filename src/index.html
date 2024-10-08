@@ -14,11 +14,12 @@
 </head>
 <body>
 <header>
-<div class="header-left">
-<img src="img/byteforge_logo.svg" height="60" title="Byte Forge" alt="Byte Forge logo">
-</div>
-<div class="header-right">
-<details open>
+<img src="img/byteforge_logo.svg" height="40" title="Byte Forge" alt="Byte Forge logo">
+<h1>Byte Forge</h1>
+</header>
+<main>
+<section>
+<details>
 <summary>About</summary>
 <p><em>Byte Forge</em> allows you to easily convert data between various formats. Whether you're working with byte arrays (in hex, decimal, octal, or binary), ASCII or UTF-8 strings, 32-bit/64-bit floating-point numbers, or signed/unsigned integers (8 to 64-bit), this tool will seamlessly convert your input to all supported formats. Simply enter your data in any format, and instantly view its equivalent representation across all others. Perfect for developers, engineers, or anyone needing quick and accurate data format conversions!</p>
 </details>
@@ -26,9 +27,8 @@
 <summary>Help</summary>
 <p>TBD ... of course</p>
 </details>
-</div>
-</header>
-<main>
+</section>
+<section>
 <form accept-charset="utf-8" target="_self">
 <fieldset>
 <legend>Byte Array</legend>
@@ -49,15 +49,17 @@
 <td><textarea id="bcByteArrayOct" rows="4"></textarea></td>
 <td><textarea id="bcByteArrayBin" rows="4"></textarea></td>
 </tr>
-<tr><td colspan="2"><label>Choose Byte Array format:</label><br>
+<tr><td colspan="2"><label>Format settings:</label><br>
 <input type="checkbox" id="bcByteArrayPrefix" value="0x">
-<label for="bcByteArrayPrefix">Prefix (0x/0d/0o/0b)</label><br>
+<label for="bcByteArrayPrefix">Prefix (0x/0d/0o/0b)</label>
 <input type="checkbox" id="bcByteArraySpace" value="space">
-<label for="bcByteArraySpace">Blank separator</label><br>
-<input type="checkbox" id="bcByteArrayComma" value="comma">
-<label for="bcByteArrayComma">Comma separator</label><br>
-<!-- <input type="checkbox" id="bcByteArraySemicolon" value="semicolon">
-<label for="bcByteArraySemicolon">Semicolon separator</label><br> -->
+<label for="bcByteArraySpace">Blank separator</label>
+<input type="radio" id="bcByteArraySepNo" name="bcByteArraySepChar" value="" checked>
+<label for="bcByteArraySepNo">No Separator</label>
+<input type="radio" id="bcByteArraySepComma" name="bcByteArraySepChar" value=",">
+<label for="bcByteArraySepComma">Comma Separator</label>
+<input type="radio" id="bcByteArraySepSemicolon" name="bcByteArraySepChar" value=";">
+<label for="bcByteArraySepSemicolon">Semicolon Separator</label>
 </td></tr>
 </table>
 </fieldset>
@@ -134,10 +136,11 @@
 </fieldset>
 <fieldset>
 <legend>Controls & Console</legend>
-<textarea rows="6" id="bcConsole" readonly></textarea>
+<textarea rows="3" id="bcConsole" readonly></textarea>
 <input type="reset" value="Clear All">
 </fieldset>
 </form>
+</section>
 </main>
 <footer>
 <div class="footer-left">

@@ -2,7 +2,7 @@
     --color-bg: #ffffff;
     --color-fg: #000000;
     --color-bg2: #f2f2f2;
-    --color-bghl: #fff8dc;
+    --color-bghl: #fff6e6;
     --color-bgro: #ddd;
     --color-border: #bbb;
 }
@@ -22,33 +22,30 @@ html {
 
 body {
     margin: 0;
+    padding: 0.3rem;
     font-family: sans-serif;
     background-color: var(--color-bg);
     color: var(--color-fg);
 }
 
 header {
-    font-size: 0.8rem;
     display: flex;
 }
 
-.header-left {
-    padding: 0.3rem;
-    text-align: left;
+header img {
+    height: 60px;
 }
 
-.header-right {
-    padding: 0.3rem;
-    text-align: left;
-}
-
-h1 {
+header h1 {
+    padding-left: 5px;
     margin: 0;
-    text-decoration: overline underline;
+    font-size: 3rem;
+    line-height: 50px;
+    font-weight: 800;
 }
 
 footer {
-    padding: 0.3rem;
+    padding: 0 1rem 0 1rem;
     font-size: 0.7rem;
     display: flex;
     justify-content: space-between;
@@ -87,7 +84,7 @@ input, select, textarea {
 fieldset {
     background-color: var(--color-bg2);
     border: 1px solid var(--color-border);
-    margin: 5px;
+    margin: 0.5rem 0 0.5rem 0;
 }
 
 legend {

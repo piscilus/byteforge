@@ -1,30 +1,17 @@
-function composeByteArrayHex(input, prefix = false, space = false, comma = false) {
-    if (!(input instanceof Uint8Array)) {
-        throw new TypeError("Input must be a Uint8Array.");
-    }
-
-    const hexArray = [];
-    for (let i = 0; i < input.length; i++) {
-        hexArray.push(input[i].toString(16).padStart(2, '0').toUpperCase());
-    }
-    let formattedHex = hexArray;
-    if (prefix) {
-        formattedHex = formattedHex.map(byte => '0x' + byte);
-    }
-    let separator = '';
-    if (comma && space) {
-        separator = ', ';
-    } else if (comma) {
-        separator = ',';
-    } else if (space) {
-        separator = ' ';
-    } else {
-        separator = '';
-    }
-    return { success: true, result: formattedHex.join(separator) };
+function composeByteArrayHex(input, prefix = false, space = false, sepChar = '') {
+    let result = Array.from(input)
+        .map(byte => {
+            let hexByte = byte.toString(16).padStart(2, '0').toUpperCase();
+            if (prefix) {
+                hexByte = '0x' + hexByte;
+            }
+            return hexByte;
+        })
+        .join(sepChar ? (space ? sepChar + ' ' : sepChar) : (space ? ' ' : ''));
+    return { success: true, result: result };
 }
 
-function composeByteArrayDec(input, prefix, space, comma) {
+function composeByteArrayDec(input, prefix, space, sepChar = '') {
     let result = Array.from(input)
         .map(byte => {
             let decByte = byte.toString(10);
@@ -33,11 +20,11 @@ function composeByteArrayDec(input, prefix, space, comma) {
             }
             return decByte;
         })
-        .join(comma ? (space ? ', ' : ',') : (space ? ' ' : ''));
+        .join(sepChar ? (space ? sepChar + ' ' : sepChar) : (space ? ' ' : ''));
     return { success: true, result: result };
 }
 
-function composeByteArrayOct(input, prefix, space, comma) {
+function composeByteArrayOct(input, prefix, space, sepChar = '') {
     let result = Array.from(input)
         .map(byte => {
             let octalByte = byte.toString(8).padStart(3, '0');
@@ -46,11 +33,11 @@ function composeByteArrayOct(input, prefix, space, comma) {
             }
             return octalByte;
         })
-        .join(comma ? (space ? ', ' : ',') : (space ? ' ' : ''));
+        .join(sepChar ? (space ? sepChar + ' ' : sepChar) : (space ? ' ' : ''));
         return { success: true, result: result };
 }
 
-function composeByteArrayBin(input, prefix, space, comma) {
+function composeByteArrayBin(input, prefix, space, sepChar = '') {
     let result = Array.from(input)
     .map(byte => {
         let binaryByte = byte.toString(2).padStart(8, '0');
@@ -59,7 +46,7 @@ function composeByteArrayBin(input, prefix, space, comma) {
         }
         return binaryByte;
     })
-    .join(comma ? (space ? ', ' : ',') : (space ? ' ' : ''));
+    .join(sepChar ? (space ? sepChar + ' ' : sepChar) : (space ? ' ' : ''));
     return { success: true, result: result };
 }
 

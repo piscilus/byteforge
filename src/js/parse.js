@@ -3,7 +3,7 @@ function parseByteArrayHex(input) {
         throw new TypeError('Input must be a string!');
     }
     try {
-        const splitRegex = /(?:0x|,|\s)+/i;
+        const splitRegex = /(?:0x|,|;|\s)+/i;
         const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
         const result = [];
         const hexRegex = /^[0-9a-fA-F]+$/;
@@ -36,7 +36,7 @@ function parseByteArrayDec(input) {
         throw new TypeError('Input must be a string!');
     }
     try {
-        const splitRegex = /(?:0d|,|\s)+/i;
+        const splitRegex = /(?:0d|,|;|\s)+/i;
         const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
         const result = [];
         const decRegex = /^[0-9]+$/;
@@ -75,7 +75,7 @@ function parseByteArrayOct(input) {
         throw new TypeError('Input must be a string!');
     }
     try {
-        const splitRegex = /(?:0o|,|\s)+/i;
+        const splitRegex = /(?:0o|,|;|\s)+/i;
         const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
         const result = [];
         const octRegex = /^[0-7]+$/;
@@ -114,7 +114,7 @@ function parseByteArrayBin(input) {
         throw new TypeError('Input must be a string!');
     }
     try {
-        const splitRegex = /(?:0b|,|\s)+/i;
+        const splitRegex = /(?:0b|,|;|\s)+/i;
         const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
         const result = [];
         const binRegex = /^[0-1]+$/;
@@ -147,18 +147,19 @@ function parseStringASCII(input) {
     if (typeof input.value !== 'string') {
         throw new TypeError('Input must be a string!');
     }
-    let result = new Array();
-    for (let i = 0; i < input.value.length; i++) {
-        let charCode = input.value.charCodeAt(i);
-        if (charCode < 32 || charCode > 126) {
-            input.style.color = 'red';
-            return { success: false, message: 'Invalid hex input' };
-        } else {
-            input.style.color = '';
+    try {
+        let result = new Array();
+        for (let i = 0; i < input.value.length; i++) {
+            let charCode = input.value.charCodeAt(i);
+            if (charCode < 32 || charCode > 126) {
+                throw new Error(`StringASCII: Invalid non-ASCII character '${input.value[i]}'!`);
+            }
+            result.push(charCode);
         }
-        result.push(charCode);
+        return { success: true, result: new Uint8Array(result) };
+    } catch (error) {
+        return { success: false, message: error.message};
     }
-    return { success: true, result: new Uint8Array(result) };
 }
 
 function parseStringUTF8(input) {

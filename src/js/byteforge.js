@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let stringSubstituteChar = document.getElementById('bcStringSubstituteChar').value;
     let byteArrayPrefix = document.getElementById('bcByteArrayPrefix').checked;
     let byteArraySpace = document.getElementById('bcByteArraySpace').checked;
-    let byteArrayComma = document.getElementById('bcByteArrayComma').checked;
+    let byteArraySepChar = document.querySelector('input[name="bcByteArraySepChar"]:checked').value;
+
     const bcByteArrayLength = document.querySelectorAll('.bcByteArrayLength');
     const bcStringASCIILength = document.getElementById('bcStringASCIILength');
     const bcStringUTF8Length = document.getElementById('bcStringUTF8Length');
@@ -20,22 +21,22 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             element: document.getElementById('bcByteArrayHex'),
             parse: (val) => parseByteArrayHex(val),
-            format: (val) => composeByteArrayHex(val, byteArrayPrefix, byteArraySpace, byteArrayComma),
+            format: (val) => composeByteArrayHex(val, byteArrayPrefix, byteArraySpace, byteArraySepChar),
         },
         {
             element: document.getElementById('bcByteArrayDec'),
             parse: (val) => parseByteArrayDec(val),
-            format: (val) => composeByteArrayDec(val, byteArrayPrefix, byteArraySpace, byteArrayComma),
+            format: (val) => composeByteArrayDec(val, byteArrayPrefix, byteArraySpace, byteArraySepChar),
         },
         {
             element: document.getElementById('bcByteArrayOct'),
             parse: (val) => parseByteArrayOct(val),
-            format: (val) => composeByteArrayOct(val, byteArrayPrefix, byteArraySpace, byteArrayComma),
+            format: (val) => composeByteArrayOct(val, byteArrayPrefix, byteArraySpace, byteArraySepChar),
         },
         {
             element: document.getElementById('bcByteArrayBin'),
             parse: (val) => parseByteArrayBin(val),
-            format: (val) => composeByteArrayBin(val, byteArrayPrefix, byteArraySpace, byteArrayComma),
+            format: (val) => composeByteArrayBin(val, byteArrayPrefix, byteArraySpace, byteArraySepChar),
         },
         {
             element: document.getElementById('bcStringASCII'),
@@ -102,37 +103,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const bcEndiannessInt = document.getElementById('bcEndiannessInt');
     bcEndiannessInt.addEventListener('change', (event) => {
         endiannessInt = event.target.value;
-        updateAllInputs(0);
+        updateAllInputs(-1);
     });
 
     const bcEndiannessFloat = document.getElementById('bcEndiannessFloat');
     bcEndiannessFloat.addEventListener('change', (event) => {
         endiannessFloat = event.target.value;
-        updateAllInputs(0);
+        updateAllInputs(-1);
     });
 
     const bcStringSubstituteChar = document.getElementById('bcStringSubstituteChar');
     bcStringSubstituteChar.addEventListener('input', (event) => {
         stringSubstituteChar = event.target.value;
-        updateAllInputs(0);
+        updateAllInputs(-1);
     });
 
     const bcByteArrayPrefix = document.getElementById('bcByteArrayPrefix');
     bcByteArrayPrefix.addEventListener('input', (event) => {
         byteArrayPrefix = event.target.checked;
-        updateAllInputs(4);
+        updateAllInputs(-1);
     });
 
     const bcByteArraySpace = document.getElementById('bcByteArraySpace');
     bcByteArraySpace.addEventListener('input', (event) => {
         byteArraySpace = event.target.checked;
-        updateAllInputs(4);
+        updateAllInputs(-1);
     });
 
-    const bcByteArrayComma = document.getElementById('bcByteArrayComma');
-    bcByteArrayComma.addEventListener('input', (event) => {
-        byteArrayComma = event.target.checked;
-        updateAllInputs(4);
+    const bcByteArraySepChar = document.querySelectorAll('input[name="bcByteArraySepChar"]');
+    bcByteArraySepChar.forEach((radio) => {
+        radio.addEventListener('input', (event) => {
+            byteArraySepChar = event.target.value;
+            updateAllInputs(-1);
+        });
     });
 
     inputsConfig.forEach((inputConfig, index) => {
@@ -142,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!parsedValue.success) {
             inputConfig.element.style.color = 'red';
             if (parsedValue.message)
-                bcConsole.value += parsedValue.message + '\n';
+                bcConsole.value = parsedValue.message + '\n';
             return;
         }
         else {
@@ -159,9 +162,12 @@ document.addEventListener('DOMContentLoaded', () => {
         inputsConfig.forEach((inputConfig, index) => {
             if (index === excludeIndex || !inputConfig.format) return;
             out = inputConfig.format(centralArrayOfInt);
+            inputConfig.element.style.color = '';
             if (out.success) {
                 inputConfig.element.value = out.result;
+                inputConfig.element.style.backgroundColor = '';
             } else {
+                inputConfig.element.style.backgroundColor = '#ffe9e6';
                 // if (out.message)
                 //    bcConsole.value += out.message + '\n';
                 inputConfig.element.value = '';
