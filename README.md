@@ -9,11 +9,10 @@ formats and data types.
 ## To do
 
 - [ ] max length for the form elements?
-- [ ] add missing conversion
+- [x] add missing conversion
 - [ ] testing...
-- [ ] add descriptions and help
 - byte array formats
-  - [ ] select semicolon or comma as a separator?
+  - [x] select semicolon or comma as a separator?
   - [ ] let user freely choose/type prefix and separator, e.g., up to three
         characters each?
 - [ ] endianness for byte array (swap)
@@ -28,6 +27,7 @@ formats and data types.
 
 ## Known issues
 
-- [ ] When there was an invalid input and the style is changed to red, it does
+- [x] When there was an invalid input and the style is changed to red, it does
       not get reset when input from a different format is written to the
       element, i.e., the compose functions must reset the style.
+- [ ] Parsing high 64-bit numbers does not work properly
