@@ -299,6 +299,89 @@ function parseInt16(input, endianness, sign) {
 
 }
 
+function parseInt32(input, endianness, sign) {
+    try {
+        let result = input.value.trim().split('\n').map(line => {
+            let trimmedLine = line.trim();
+            if (sign) {
+                if (!/^-?\d+$/.test(trimmedLine)) {
+                    throw new Error(`Int32: '${trimmedLine}' is not a valid signed number!`);
+                }
+            } else {
+                if (!/^\d+$/.test(trimmedLine)) {
+                    throw new Error(`Uint32: '${trimmedLine}' is not a valid unsigned number!`);
+                }
+            }
+            let number = parseInt(trimmedLine, 10);
+            if (sign) {
+                if (number < -2147483648 || number > 2147483647) {
+                    throw new Error(`Int32: '${trimmedLine}' is out of range (-2147483648 to 2147483647) for signed 32-bit integers!`);
+                }
+            } else {
+                if (number < 0 || number > 4294967295) {
+                    throw new Error(`Uint32: '${trimmedLine}' is out of range (0 to 4294967295) for unsigned 32-bit integers!`);
+                }
+            }
+            let lowByte0 = number & 0xFF;
+            let lowByte1 = (number >> 8) & 0xFF;
+            let lowByte2 = (number >> 16) & 0xFF;
+            let highByte = (number >> 24) & 0xFF;
+            if (endianness === "little") {
+                return [lowByte0, lowByte1, lowByte2, highByte];
+            } else {
+                return [highByte, lowByte2, lowByte1, lowByte0];
+            }
+        });
+        return { success: true, result: new Uint8Array(result.flat()) };
+    } catch (error) {
+        return { success: false, message: error.message};
+    }
+}
+
+function parseInt64(input, endianness, sign) {
+    try {
+        let result = input.value.trim().split('\n').map(line => {
+            let trimmedLine = line.trim();
+            if (sign) {
+                if (!/^-?\d+$/.test(trimmedLine)) {
+                    throw new Error(`Int64: '${trimmedLine}' is not a valid signed number!`);
+                }
+            } else {
+                if (!/^\d+$/.test(trimmedLine)) {
+                    throw new Error(`Uint64: '${trimmedLine}' is not a valid unsigned number!`);
+                }
+            }
+            let number = parseInt(trimmedLine, 10);
+            if (sign) {
+                if (number < -9223372036854775808 || number > 9223372036854775807) {
+                    throw new Error(`Int64: '${trimmedLine}' is out of range (-9223372036854775808 to 9223372036854775807) for signed 64-bit integers!`);
+                }
+            } else {
+                if (number < 0 || number > 18446744073709551615) {
+                    throw new Error(`Uint64: '${trimmedLine}' is out of range (0 to 18446744073709551615) for unsigned 64-bit integers!`);
+                }
+            }
+            let lowByte0 = number & 0xFF;
+            let lowByte1 = (number >> 8) & 0xFF;
+            let lowByte2 = (number >> 16) & 0xFF;
+            let lowByte3 = (number >> 24) & 0xFF;
+            let lowByte4 = (number >> 32) & 0xFF;
+            let lowByte5 = (number >> 40) & 0xFF;
+            let lowByte6 = (number >> 48) & 0xFF;
+            let highByte = (number >> 56) & 0xFF;
+            if (endianness === "little") {
+                return [lowByte0, lowByte1, lowByte2, lowByte3, lowByte4, lowByte5, lowByte6, highByte];
+            } else {
+                return [highByte, lowByte6, lowByte5, lowByte4, lowByte3, lowByte2, lowByte1, lowByte0];
+            }
+        });
+        return { success: true, result: new Uint8Array(result.flat()) };
+    } catch (error) {
+        return { success: false, message: error.message};
+    }
+}
+
+
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = {
         parseStringASCII,
@@ -310,6 +393,8 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
         parseFloat32,
         parseFloat64,
         parseInt8,
-        parseInt16
+        parseInt16,
+        parseInt32,
+        parseInt64
     };
 }

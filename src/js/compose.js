@@ -1,4 +1,7 @@
 function composeByteArrayHex(input, prefix = false, space = false, sepChar = '') {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     let result = Array.from(input)
         .map(byte => {
             let hexByte = byte.toString(16).padStart(2, '0').toUpperCase();
@@ -12,6 +15,9 @@ function composeByteArrayHex(input, prefix = false, space = false, sepChar = '')
 }
 
 function composeByteArrayDec(input, prefix, space, sepChar = '') {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     let result = Array.from(input)
         .map(byte => {
             let decByte = byte.toString(10);
@@ -25,6 +31,9 @@ function composeByteArrayDec(input, prefix, space, sepChar = '') {
 }
 
 function composeByteArrayOct(input, prefix, space, sepChar = '') {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     let result = Array.from(input)
         .map(byte => {
             let octalByte = byte.toString(8).padStart(3, '0');
@@ -34,26 +43,33 @@ function composeByteArrayOct(input, prefix, space, sepChar = '') {
             return octalByte;
         })
         .join(sepChar ? (space ? sepChar + ' ' : sepChar) : (space ? ' ' : ''));
-        return { success: true, result: result };
+    return { success: true, result: result };
 }
 
 function composeByteArrayBin(input, prefix, space, sepChar = '') {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     let result = Array.from(input)
-    .map(byte => {
-        let binaryByte = byte.toString(2).padStart(8, '0');
-        if (prefix) {
-            binaryByte = '0b' + binaryByte;
-        }
-        return binaryByte;
-    })
-    .join(sepChar ? (space ? sepChar + ' ' : sepChar) : (space ? ' ' : ''));
+        .map(byte => {
+            let binaryByte = byte.toString(2).padStart(8, '0');
+            if (prefix) {
+                binaryByte = '0b' + binaryByte;
+            }
+            return binaryByte;
+        })
+        .join(sepChar ? (space ? sepChar + ' ' : sepChar) : (space ? ' ' : ''));
     return { success: true, result: result };
 }
 
 function composeASCIIString(input, substituteChar) {
-    let result = Array.from(input).map(byte => {
-        return (byte >= 32 && byte <= 126) ? String.fromCharCode(byte) : substituteChar;
-    }).join('');
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
+    let result = Array.from(input)
+        .map(byte => {
+            return (byte >= 32 && byte <= 126) ? String.fromCharCode(byte) : substituteChar;
+        }).join('');
     if (result.length <= 0) {
         bcStringASCIILength.innerHTML = "";
     } else if (result.length == 1) {
@@ -61,7 +77,6 @@ function composeASCIIString(input, substituteChar) {
     } else {
         bcStringASCIILength.innerHTML = `(${result.length} characters)`;
     }
-
     return { success: true, result: result };
 }
 
@@ -83,6 +98,9 @@ function composeStringUTF8(input, substitute = '?') {
 }
 
 function composeFloat32(input, endianness) {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     if (input.length % 4 !== 0) {
         return { success: false, message: 'Insufficient data to calculate 32-bit float!' };
     }
@@ -100,6 +118,9 @@ function composeFloat32(input, endianness) {
 }
 
 function composeFloat64(input, endianness) {
+    if (!(input instanceof Uint8Array)) {
+        throw new TypeError("Input must be a Uint8Array.");
+    }
     if (input.length % 8 !== 0) {
         return { success: false, message: 'Insufficient data to calculate 64-bit float!' };
     }

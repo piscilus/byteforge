@@ -70,12 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             element: document.getElementById('bcUint32'),
-            parse: null,
+            parse: (val) => parseInt32(val, endiannessInt, false),
             format: (val) => composeInt32(val, endiannessInt, false),
         },
         {
             element: document.getElementById('bcUint64'),
-            parse: null,
+            parse: (val) => parseInt64(val, endiannessInt, false),
             format: (val) => composeInt64(val, endiannessInt, false),
         },
         {
@@ -90,12 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             element: document.getElementById('bcInt32'),
-            parse: null,
+            parse: (val) => parseInt32(val, endiannessInt, true),
             format: (val) => composeInt32(val, endiannessInt, true),
         },
         {
             element: document.getElementById('bcInt64'),
-            parse: null,
+            parse: (val) => parseInt64(val, endiannessInt, true),
             format: (val) => composeInt64(val, endiannessInt, true),
         }
     ];
