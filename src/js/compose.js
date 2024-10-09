@@ -62,13 +62,17 @@ function composeByteArrayBin(input, prefix, space, sepChar = '') {
     return { success: true, result: result };
 }
 
-function composeASCIIString(input, substituteChar) {
+function composeASCIIString(input, substituteEnable = false, substituteChar = '?') {
     if (!(input instanceof Uint8Array)) {
         throw new TypeError("Input must be a Uint8Array.");
     }
     let result = Array.from(input)
         .map(byte => {
-            return (byte >= 32 && byte <= 126) ? String.fromCharCode(byte) : substituteChar;
+            if (substituteEnable) {
+                return (byte >= 32 && byte <= 126) ? String.fromCharCode(byte) : substituteChar;
+            } else {
+                return String.fromCharCode(byte);
+            }
         }).join('');
     if (result.length <= 0) {
         bcStringASCIILength.innerHTML = "";
@@ -80,7 +84,7 @@ function composeASCIIString(input, substituteChar) {
     return { success: true, result: result };
 }
 
-function composeStringUTF8(input, substitute = '?') {
+function composeStringUTF8(input, substituteEnable = false, substituteChar = '?') {
     if (!(input instanceof Uint8Array)) {
         throw new TypeError("Input must be a Uint8Array.");
     }

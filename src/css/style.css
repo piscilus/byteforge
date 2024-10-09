@@ -1,26 +1,42 @@
-[data-theme="light"] {
+:root, [data-theme="light"] {
     --color-bg: #ffffff;
     --color-fg: #000000;
+    --color-symbol: invert(0%) sepia(94%) saturate(0%) hue-rotate(280deg) brightness(97%) contrast(97%);
+    --color-link: #4973FB;
+    --color-link-hover: #B7386E;
     --color-bg2: #f2f2f2;
     --color-bghl: #fff6e6;
-    --color-bgro: #ddd;
     --color-border: #bbb;
+    --color-err-fg: #e62e00;
+    --color-err-bg: #ffebe6;
+    --color-bg-tooltip: #888888;
 }
 
 [data-theme="dark"] {
-    --color-bg: #000000;
-    --color-fg: #ffffff;
-    --color-bg2: #222;
-    --color-bghl: #1d1d0c;
-    --color-bgro: #333;
-    --color-border: #111;
+    --color-bg: #111111;
+    --color-fg: #D4D4D4;
+    --color-logo: invert(97%) sepia(100%) saturate(0%) hue-rotate(18deg) brightness(102%) contrast(105%);
+    --color-link: #4973FB;
+    --color-link-hover: #FACA30;
+    --color-bg2: #171717;
+    --color-bghl: #1a1a00;
+    --color-border: #222222;
+    --color-err-fg: #ff471a;
+    --color-err-bg: #1a0500;
+    --color-bg-tooltip: #222222;
 }
+
+.logo {
+    filter: var(--color-logo);
+}
+/* https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-an-svg-element */
 
 html {
     margin: 0;
 }
 
 body {
+    min-height: 100vh;
     margin: 0;
     padding: 0.3rem;
     font-family: sans-serif;
@@ -28,20 +44,42 @@ body {
     color: var(--color-fg);
 }
 
+a {
+    color: var(--color-link);
+}
+
+a:hover {
+    color: var(--color-link-hover);
+}
+
 header {
-    display: flex;
-}
-
-header img {
-    height: 60px;
-}
-
-header h1 {
-    padding-left: 5px;
+    display: grid;
+    grid-template-columns: 100px auto auto;
+    grid-template-rows: 80px;
+    width: 100%;
     margin: 0;
+    padding: 0;
+}
+
+header div {
+    line-height: 80px;
+}
+
+header div img {
+    height: 60px;
+    vertical-align: middle;
+}
+
+header div h1 {
+    margin: 0;
+    padding: 0;
     font-size: 3rem;
-    line-height: 50px;
     font-weight: 800;
+}
+
+.header-right {
+    text-align: right;
+    padding-right: 10px;
 }
 
 footer {
@@ -78,6 +116,7 @@ input, select, textarea {
     font-size: 0.9rem;
     border: 1px solid var(--color-border);
     background-color: var(--color-bg);
+    color: var(--color-fg);
     border-radius: 4px;
 }
 
@@ -115,5 +154,105 @@ textarea:focus {
 }
 
 label:hover {
-    color: red;
+    color: var(--color-link-hover);
+}
+
+summary {
+    cursor: pointer;
+}
+
+[data-theme-toggle] {
+    background-color: var(--color-bg2);
+    border: 1px solid var(--color-border);
+    height: 40px;
+    width: 40px;
+    color: var(--color-fg);
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+[data-theme-toggle]:hover {
+    cursor: pointer;
+    color: var(--color-link-hover);
+}
+
+[data-tooltip][aria-description] {
+    position: relative;
+    cursor: help;
+}
+
+[data-tooltip][aria-description]::before,
+[data-tooltip][aria-description]::after {
+    opacity: 0;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    transition: opacity 0.15s ease-in-out, visibility 0s 0.15s ease-in-out;
+    visibility: hidden;
+}
+
+[data-tooltip][aria-description]::before {
+    border-bottom: 8px solid var(--color-bg-tooltip);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    content: "";
+    height: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(calc(-100% + 1px));
+    width: 0;
+    z-index: 1;
+}
+
+[data-tooltip][aria-description]::after {
+    background-color: var(--color-bg-tooltip);
+    border-radius: 5px;
+    color: var(--color-fg);
+    content: attr(aria-description);
+    font-size: 0.7rem;
+    padding: 0.5em 0.75em;
+    left: 0;
+    transform: translateX(0);
+    white-space: normal;
+    max-width: 400px;
+    min-width: 200px;
+    word-break: normal;
+    overflow-wrap:normal;
+    z-index: 1;
+}
+
+[data-tooltip][aria-description]:hover::before,
+[data-tooltip][aria-description]:hover::after,
+[data-tooltip][aria-description]:focus::before,
+[data-tooltip][aria-description]:focus::after {
+    opacity: 1;
+    transition: opacity 0.15s ease-in-out;
+    visibility: visible;
+}
+
+@media (hover: none) {
+    [data-tooltip][aria-description]::before,
+    [data-tooltip][aria-description]::after {
+        content: none;
+    }
+}
+
+.collapsible {
+    cursor: pointer;
+}
+
+.collapsible:hover {
+    color: var(--color-link-hover);
+}
+
+.collapsible:after {
+    content: ' \25BC';
+}
+
+.active:after {
+    content: ' \25B2';
+}
+
+.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
 }
