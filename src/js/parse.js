@@ -2,6 +2,9 @@ function parseByteArrayHex(input) {
     if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     try {
         const splitRegex = /(?:0x|,|;|\s)+/i;
         const tokens = input.split(splitRegex).filter(token => token.length > 0);
@@ -34,6 +37,9 @@ function parseByteArrayHex(input) {
 function parseByteArrayDec(input) {
     if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
+    }
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
     }
     try {
         const splitRegex = /(?:0d|,|;|\s)+/i;
@@ -74,6 +80,9 @@ function parseByteArrayOct(input) {
     if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     try {
         const splitRegex = /(?:0o|,|;|\s)+/i;
         const tokens = input.split(splitRegex).filter(token => token.length > 0);
@@ -113,6 +122,9 @@ function parseByteArrayBin(input) {
     if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     try {
         const splitRegex = /(?:0b|,|;|\s)+/i;
         const tokens = input.split(splitRegex).filter(token => token.length > 0);
@@ -147,8 +159,11 @@ function parseStringASCII(input) {
     if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     try {
-        let result = new Array();
+        const result = new Array();
         for (let i = 0; i < input.length; i++) {
             let charCode = input.charCodeAt(i);
             if (charCode < 32 || charCode > 126) {
@@ -166,7 +181,9 @@ function parseStringUTF8(input) {
     if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
-
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     const utf8String = input.replace(
         /[\u0080-\u07ff]/g,  // U+0080 - U+07FF => 2 bytes 110yyyyy, 10zzzzzz
         function(c) {
@@ -188,6 +205,9 @@ function parseStringUTF8(input) {
 }
 
 function parseFloat32(input, endianness) {
+    if (typeof input !== 'string') {
+        throw new TypeError('Input must be a string!');
+    }
     if (!input) {
         return { success: true, result: new Uint8Array() };
     }
@@ -216,6 +236,9 @@ function parseFloat32(input, endianness) {
 }
 
 function parseFloat64(input, endianness) {
+    if (typeof input !== 'string') {
+        throw new TypeError('Input must be a string!');
+    }
     if (!input) {
         return { success: true, result: new Uint8Array() };
     }
@@ -244,7 +267,12 @@ function parseFloat64(input, endianness) {
 }
 
 function parseInt8(input, sign = false) {
-    let result;
+    if (typeof input !== 'string') {
+        throw new TypeError('Input must be a string!');
+    }
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     try {
         let values = input.trim().split('\n').map(line => {
             let trimmedLine = line.trim();
@@ -269,14 +297,19 @@ function parseInt8(input, sign = false) {
             }
             return number;
         });
-        result = new Uint8Array(values);
+        return { success: true, result: new Uint8Array(values) };
     } catch (error) {
         return { success: false, message: error.message};
     }
-    return { success: true, result: new Uint8Array(result) };
 }
 
 function parseInt16(input, endianness = 'big', sign = false) {
+    if (typeof input !== 'string') {
+        throw new TypeError('Input must be a string!');
+    }
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     try {
         let result = input.trim().split('\n').map(line => {
             let trimmedLine = line.trim();
@@ -315,6 +348,12 @@ function parseInt16(input, endianness = 'big', sign = false) {
 }
 
 function parseInt32(input, endianness, sign) {
+    if (typeof input !== 'string') {
+        throw new TypeError('Input must be a string!');
+    }
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     try {
         let result = input.trim().split('\n').map(line => {
             let trimmedLine = line.trim();
@@ -354,6 +393,12 @@ function parseInt32(input, endianness, sign) {
 }
 
 function parseInt64(input, endianness, sign) {
+    if (typeof input !== 'string') {
+        throw new TypeError('Input must be a string!');
+    }
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     try {
         let result = input.trim().split('\n').map(line => {
             let trimmedLine = line.trim();
@@ -395,7 +440,6 @@ function parseInt64(input, endianness, sign) {
         return { success: false, message: error.message};
     }
 }
-
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = {
