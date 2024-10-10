@@ -4,7 +4,10 @@
 <title>Byte Forge</title>
 <meta charset="UTF-8">
 <meta name="author" content="Julian Krämer">
-<meta name="description" content="">
+<meta name="description" content="Byte Forge allows you to easily convert data
+between various formats, e.g. byte arrays (in hex, decimal, octal, or binary),
+ASCII or UTF-8 strings, 32-bit/64-bit floating-point numbers, or signed/unsigned
+integers (8 to 64-bit).">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="./js/compose.js"></script>
 <script src="./js/parse.js"></script>
@@ -17,7 +20,7 @@
 <header>
 <div><img src="img/byteforge_logo.svg" class="logo" title="Byte Forge" alt="Byte Forge logo"></div>
 <div><h1>Byte Forge</h1></div>
-<div class="header-right"><button type="button" data-theme-toggle aria-label="Change to light theme">&#x263C;</button></div>
+<div class="header-right"><button type="button" data-theme-toggle aria-label="&#x263C;" title="toggle light/dark theme">&#x263C;</button></div>
 </header>
 <main>
 <form accept-charset="utf-8" target="_self">
@@ -26,32 +29,33 @@
 <div class="content">
 <table>
 <tr>
-<td><label for="bcByteArrayHex" data-tooltip aria-description="Values of a byte array in hexadecimal format. (digits 0..F, values 0..FF)">Hexadecimal</label> <span class="bcByteArrayLength"></span></td>
-<td><label for="bcByteArrayDec" data-tooltip aria-description="Values of a byte array in decimal format. (digits 0..9, values 0..255)">Decimal</label> <span class="bcByteArrayLength"></span></td>
+<td><label for="bcByteArrayHex" data-tooltip title="Byte array in hexadecimal format.&#13;&#10;&#183; digits: 0..F&#13;&#10;&#183; values per byte: 0..FF&#13;&#10;&#183; separators: none, '0x', comma, semicolon, space, line break&#13;&#10;Example: 'DEADBEEF,e;42 1234 0x550x87'">Hexadecimal</label> <span class="bcByteArrayLength"></span></td>
+<td><label for="bcByteArrayDec" data-tooltip title="Byte array in decimal format.&#13;&#10;&#183; digits: 0..9&#13;&#10;&#183; values per byte: 0..255&#13;&#10;&#183; separators: none, '0d', comma, semicolon, space, line break&#13;&#10;Example: '123042 0d3,4;50d6'">Decimal</label> <span class="bcByteArrayLength"></span></td>
 </tr>
 <tr>
 <td><textarea id="bcByteArrayHex" rows="4"></textarea></td>
 <td><textarea id="bcByteArrayDec" rows="4"></textarea></td>
 </tr>
 <tr>
-<td><label for="bcByteArrayOct" data-tooltip aria-description="Values of a byte array in octal format. (digits 0..7, values 0..377)">Octal</label> <span class="bcByteArrayLength"></span></td>
-<td><label for="bcByteArrayBin" data-tooltip aria-description="Values of a byte array in binary format. (digits 0..1, values 00000000..11111111)">Binary</label> <span class="bcByteArrayLength"></span></td>
+<td><label for="bcByteArrayOct" data-tooltip title="Byte array in octal format.&#13;&#10;&#183; digits: 0..7&#13;&#10;&#183; values per byte: 0..377&#13;&#10;&#183; separators: none, '0o', comma, semicolon, space, line break&#13;&#10;Example: '123042 0o3,4;50o377'">Octal</label> <span class="bcByteArrayLength"></span></td>
+<td><label for="bcByteArrayBin" data-tooltip title="Byte array in binary format.&#13;&#10;&#183; digits: 0, 1&#13;&#10;&#183; values per byte: 00000000..11111111&#13;&#10;&#183; separators: none, '0b', comma, semicolon, space, line break&#13;&#10;Example: '1010101000110011 0b01,1; 00b10b0'">Binary</label> <span class="bcByteArrayLength"></span></td>
 </tr>
 <tr>
 <td><textarea id="bcByteArrayOct" rows="4"></textarea></td>
 <td><textarea id="bcByteArrayBin" rows="4"></textarea></td>
 </tr>
-<tr><td colspan="2"><label>Format settings:</label><br>
-<input type="checkbox" id="bcByteArrayPrefix" value="0x">
-<label for="bcByteArrayPrefix" data-tooltip aria-description="Add prefixes to identify the numeral system. Prefix per byte value.">Prefix (0x/0d/0o/0b)</label>
-<input type="checkbox" id="bcByteArraySpace" value="space">
-<label for="bcByteArraySpace" data-tooltip aria-description="Add a space/blank to separate byte values.">Blank separator</label>
+<tr><td colspan="2">
+<label for="bcByteArrayPrefix" data-tooltip title="Add prefixes to identify the numeral system (0x/0d/0o/0b). Prefix is applied per byte.">Prefix:</label>
+<input type="checkbox" id="bcByteArrayPrefix" value="0x"> &nbsp;
+<label for="bcByteArraySpace" data-tooltip title="Add a space/blank to separate bytes.">Blank separator:</label>
+<input type="checkbox" id="bcByteArraySpace" value="space"> &nbsp;
+<label data-tooltip title="Add (additional) separator.">Separator:</label>
 <input type="radio" id="bcByteArraySepNo" name="bcByteArraySepChar" value="" checked>
-<label for="bcByteArraySepNo" data-tooltip aria-description="No (additional) separator.">No Separator</label>
+<label for="bcByteArraySepNo" data-tooltip title="No (additional) separator.">None</label>
 <input type="radio" id="bcByteArraySepComma" name="bcByteArraySepChar" value=",">
-<label for="bcByteArraySepComma" data-tooltip aria-description="Add a comma to separate byte values.">Comma Separator</label>
+<label for="bcByteArraySepComma" data-tooltip title="Add a comma to separate bytes.">Comma</label>
 <input type="radio" id="bcByteArraySepSemicolon" name="bcByteArraySepChar" value=";">
-<label for="bcByteArraySepSemicolon" data-tooltip aria-description="Add a semicolon to separate byte values.">Semicolon Separator</label>
+<label for="bcByteArraySepSemicolon" data-tooltip title="Add a semicolon to separate bytes.">Semicolon</label>
 </td></tr>
 </table>
 </div>
@@ -61,18 +65,18 @@
 <div class="content">
 <table>
 <tr>
-<td><label for="bcStringASCII" data-tooltip aria-description="A text encoded according to American Standard Code for Information Interchange (ASCII).">ASCII</label> <span id="bcStringASCIILength"></span></td>
-<td><label for="bcStringUTF8" data-tooltip aria-description="A text encoded according to Unicode UTF-8.">UTF-8</label> <span id="bcStringUTF8Length"></span></td>
+<td><label for="bcStringASCII" data-tooltip title="Text/string encoded according to American Standard Code for Information Interchange (ASCII).">ASCII</label> <span id="bcStringASCIILength"></span></td>
+<td><label for="bcStringUTF8" data-tooltip title="Text/string encoded according to Unicode UTF-8.">UTF-8</label> <span id="bcStringUTF8Length"></span></td>
 </tr>
 <tr>
 <td><textarea id="bcStringASCII" rows="5"></textarea></td>
 <td><textarea id="bcStringUTF8"  rows="5"></textarea></td>
 </tr>
-<tr><td colspan="2"><label>Format settings:</label><br>
-<input type="checkbox" id="bcStringSubstituteEnable">
-<label for="bcStringSubstituteEnable" data-tooltip aria-description="Enable character substitution for non-printable characters.">Enable substitution</label>
+<tr><td colspan="2">
+<label for="bcStringSubstituteEnable" data-tooltip title="Enable character substitution for non-printable characters.">Enable substitution:</label>
+<input type="checkbox" id="bcStringSubstituteEnable"> &nbsp;
+<label for="bcStringSubstituteChar" data-tooltip title="Define the substitution character. Empty means that the non-printable characters are omitted.">Substitute character:</label>
 <input id="bcStringSubstituteChar" type="text" size="2" maxlength="1" value="?">
-<label for="bcStringSubstituteChar" data-tooltip aria-description="Define the substitution character. Empty means that the non-printable characters are omitted.">substitute character</label>
 </td></tr>
 </table>
 </div>
@@ -82,19 +86,24 @@
 <div class="content">
 <table>
 <tr>
-<td><label for="bcFloat32" data-tooltip aria-description="A 32-bit single precision floating point number according to IEEE 754. One number pre line.">32-bit</label></td>
-<td><label for="bcFloat64" data-tooltip aria-description="A 64-bit double precision floating point number according to IEEE 754. One number pre line.">64-bit</label></td>
+<td><label for="bcFloat32" data-tooltip title="Single precision (32-bit) floating point number according to IEEE 754. One number pre line.">32-bit</label></td>
+<td><label for="bcFloat64" data-tooltip title="Double precision (64-bit) floating point number according to IEEE 754. One number pre line.">64-bit</label></td>
 </tr>
 <tr>
 <td><textarea id="bcFloat32" rows="5"></textarea></td>
 <td><textarea id="bcFloat64" rows="5"></textarea></td>
 </tr>
 <tr><td colspan="2">
-<label for="bcEndiannessFloat" data-tooltip aria-description="Order of bytes. Big-endian = most-significant byte at lowest memory address and little-endian vice versa.">Endianness:</label>
+<label for="bcEndiannessFloat" data-tooltip title="Order of bytes.&#13;&#10;&#183; Big-endian: most-significant byte at lowest memory address, i.e. first.&#13;&#10;&#183; Little-endian: most-significant byte at highest memory address, i.e. last.">Endianness:</label>
 <select id="bcEndiannessFloat">
 <option value="big" selected>big-endian</option>
 <option value="little">little-endian</option>
-</select><br>
+</select> &nbsp;
+<label data-tooltip title="Select the output format for a decimal separator.">Decimal separator:</label>
+<input type="radio" id="bcFloatSepComma" name="bcFloatSep" value=",">
+<label for="bcFloatSepComma" data-tooltip title="Comma separator, e.g., 3,1415926">Comma</label>
+<input type="radio" id="bcFloatSepDot" name="bcFloatSep" value="." checked>
+<label for="bcFloatSepDot" data-tooltip title="Semicolon separator, e.g., 3.1415926">Dot</label>
 </td></tr>
 </table>
 </div>
@@ -108,14 +117,14 @@
 <td colspan="4">Signed</td>
 </tr>
 <tr>
-<td><label for="bcUint8" data-tooltip aria-description="Unsigned 8-bit integer (values 0..255). One number pre line.">8-bit</label></td>
-<td><label for="bcUint16" data-tooltip aria-description="Unsigned 16-bit integer (values 0..65,535). One number pre line.">16-bit</label></td>
-<td><label for="bcUint32" data-tooltip aria-description="Unsigned 32-bit integer (values 0..4,294,967,295). One number pre line.">32-bit</label></td>
-<td><label for="bcUint64" data-tooltip aria-description="Unsigned 64-bit integer (values 0..18,446,744,073,709,551,615). One number pre line.">64-bit</label></td>
-<td><label for="bcInt8" data-tooltip aria-description="Signed 8-bit integer (values -128..127). One number pre line.">8-bit</label></td>
-<td><label for="bcInt16" data-tooltip aria-description="Signed 8-bit integer (values -32,768..32,767). One number pre line.">16-bit</label></td>
-<td><label for="bcInt32" data-tooltip aria-description="Signed 32-bit integer (values -2,147,483,648..2,147,483,647). One number pre line.">32-bit</label></td>
-<td><label for="bcInt64" data-tooltip aria-description="Signed 64-bit integer (values -9,223,372,036,854,775,808..9,223,372,036,854,775,807). One number pre line.">64-bit</label></td>
+<td><label for="bcUint8" data-tooltip title="Unsigned 8-bit integer.&#13;&#10;&#183; values: 0..255&#13;&#10;One number pre line.">8-bit</label></td>
+<td><label for="bcUint16" data-tooltip title="Unsigned 16-bit integer.&#13;&#10;&#183; values: 0..65,535&#13;&#10;One number pre line.">16-bit</label></td>
+<td><label for="bcUint32" data-tooltip title="Unsigned 32-bit integer.&#13;&#10;&#183; values: 0..4,294,967,295&#13;&#10;One number pre line.">32-bit</label></td>
+<td><label for="bcUint64" data-tooltip title="Unsigned 64-bit integer.&#13;&#10;&#183; values: 0..18,446,744,073,709,551,615&#13;&#10;One number pre line.">64-bit</label></td>
+<td><label for="bcInt8" data-tooltip title="Signed 8-bit integer.&#13;&#10;&#183; values: -128..127&#13;&#10;One number pre line.">8-bit</label></td>
+<td><label for="bcInt16" data-tooltip title="Signed 8-bit integer.&#13;&#10;&#183; values: -32,768..32,767&#13;&#10;One number pre line.">16-bit</label></td>
+<td><label for="bcInt32" data-tooltip title="Signed 32-bit integer.&#13;&#10;&#183; values: -2,147,483,648..2,147,483,647&#13;&#10;One number pre line.">32-bit</label></td>
+<td><label for="bcInt64" data-tooltip title="Signed 64-bit integer.&#13;&#10;&#183; values: -9,223,372,036,854,775,808..9,223,372,036,854,775,807&#13;&#10;One number pre line.">64-bit</label></td>
 </tr>
 <tr>
 <td><textarea id="bcUint8"  rows="5"></textarea></td>
@@ -128,11 +137,11 @@
 <td><textarea id="bcInt64"  rows="5"></textarea></td>
 </tr>
 <tr><td colspan="8">
-<label for="bcEndiannessInt" data-tooltip aria-description="Order of bytes. Big-endian = most-significant byte at lowest memory address and little-endian vice versa.">Endianness:</label>
+<label for="bcEndiannessInt" data-tooltip title="Order of bytes.&#13;&#10;&#183; Big-endian: most-significant byte at lowest memory address, i.e. first.&#13;&#10;&#183; Little-endian: most-significant byte at highest memory address, i.e. last.">Endianness:</label>
 <select id="bcEndiannessInt">
 <option value="big" selected>big-endian</option>
 <option value="little">little-endian</option>
-</select><br>
+</select>
 </td></tr>
 </table>
 </div>
@@ -149,8 +158,8 @@
 <footer>
 <div class="footer-left">
 <p>The favicon is based on <a href="https://www.svgrepo.com/svg/198086/hammer" rel="external">Hammer SVG Vector</a> by SVG Repo (CC0 License).</p>
-<p>Source code of this website: <a href="https://github.com/piscilus/byteforge" rel="external">github.com/piscilus/byteforge</a>.</p>
-<p>Byte Forge &copy; Copyright 2024 Julian Krämer</p>
+<p>Source code of this website is MIT licensed and can be found on GitHub: <a href="https://github.com/piscilus/byteforge" rel="external">github.com/piscilus/byteforge</a>.</p>
+<p><strong>Byte Forge &copy; Copyright 2024 Julian Krämer</strong></p>
 </div>
 <div class="footer-right">
 <p><a href='https://ko-fi.com/V7V4ZU3J3' target='_blank'><img height='36' style='border:0; height:36px;' src='https://storage.ko-fi.com/cdn/kofi5.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com'></a></p>

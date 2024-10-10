@@ -1,6 +1,6 @@
 // compose.test.js
 
-const { composeByteArrayHex } = require('../src/js/compose');
+const { composeByteArrayHex, composeFloat64 } = require('../src/js/compose');
 
 describe('composeByteArrayHex', () => {
     test('converts byte array to hex string without any formatting', () => {
@@ -59,6 +59,80 @@ describe('composeByteArrayHex', () => {
     test('throws error when input is not an array', () => {
         const input = new Array([1,2,3]);
         expect(() => composeByteArrayHex(input, false, false, '')).toThrow(TypeError);
+    });
+
+});
+
+describe('composeFloat64', () => {
+    test('expect a 1 for big endian', () => {
+        const input = new Uint8Array([0x3F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        const output = composeFloat64(input, 'big');
+        expect(output).toEqual({ success: true, result: '1' });
+    });
+    test('expect a 1 for little endian', () => {
+        const input = new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF0, 0x3F]);
+        const output = composeFloat64(input, 'little');
+        expect(output).toEqual({ success: true, result: '1' });
+    });
+    test('expect a 0 for big endian', () => {
+        const input = new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        const output = composeFloat64(input, 'big');
+        expect(output).toEqual({ success: true, result: '0' });
+    });
+    test('expect a 0 for little endian', () => {
+        const input = new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        const output = composeFloat64(input, 'little');
+        expect(output).toEqual({ success: true, result: '0' });
+    });
+    test('expect a 0 for big endian', () => {
+        const input = new Uint8Array([0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        const output = composeFloat64(input, 'big');
+        expect(output).toEqual({ success: true, result: '-0' });
+    });
+    test('expect a 0 for little endian', () => {
+        const input = new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80]);
+        const output = composeFloat64(input, 'little');
+        expect(output).toEqual({ success: true, result: '-0' });
+    });
+    test('expect a NaN for big endian', () => {
+        const input = new Uint8Array([0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01]);
+        const output = composeFloat64(input, 'big');
+        expect(output).toEqual({ success: true, result: 'NaN' });
+    });
+    test('expect a NaN for little endian', () => {
+        const input = new Uint8Array([0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF0, 0x7F]);
+        const output = composeFloat64(input, 'little');
+        expect(output).toEqual({ success: true, result: 'NaN' });
+    });
+    test('expect a 5 for big endian', () => {
+        const input = new Uint8Array([0x40, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        const output = composeFloat64(input, 'big');
+        expect(output).toEqual({ success: true, result: '5' });
+    });
+    test('expect a 5 for little endian', () => {
+        const input = new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x14, 0x40]);
+        const output = composeFloat64(input, 'little');
+        expect(output).toEqual({ success: true, result: '5' });
+    });
+    test('expect a inf for big endian', () => {
+        const input = new Uint8Array([0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        const output = composeFloat64(input, 'big');
+        expect(output).toEqual({ success: true, result: '∞' });
+    });
+    test('expect a inf for little endian', () => {
+        const input = new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF0, 0x7F]);
+        const output = composeFloat64(input, 'little');
+        expect(output).toEqual({ success: true, result: '∞' });
+    });
+    test('expect a inf for big endian', () => {
+        const input = new Uint8Array([0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        const output = composeFloat64(input, 'big');
+        expect(output).toEqual({ success: true, result: '-∞' });
+    });
+    test('expect a inf for little endian', () => {
+        const input = new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF0, 0xFF]);
+        const output = composeFloat64(input, 'little');
+        expect(output).toEqual({ success: true, result: '-∞' });
     });
 
 });

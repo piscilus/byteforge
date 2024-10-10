@@ -1,10 +1,10 @@
 function parseByteArrayHex(input) {
-    if (typeof input.value !== 'string') {
+    if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
     try {
         const splitRegex = /(?:0x|,|;|\s)+/i;
-        const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
+        const tokens = input.split(splitRegex).filter(token => token.length > 0);
         const result = [];
         const hexRegex = /^[0-9a-fA-F]+$/;
         for (const token of tokens) {
@@ -32,12 +32,12 @@ function parseByteArrayHex(input) {
 }
 
 function parseByteArrayDec(input) {
-    if (typeof input.value !== 'string') {
+    if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
     try {
         const splitRegex = /(?:0d|,|;|\s)+/i;
-        const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
+        const tokens = input.split(splitRegex).filter(token => token.length > 0);
         const result = [];
         const decRegex = /^[0-9]+$/;
         for (const token of tokens) {
@@ -71,12 +71,12 @@ function parseByteArrayDec(input) {
 }
 
 function parseByteArrayOct(input) {
-    if (typeof input.value !== 'string') {
+    if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
     try {
         const splitRegex = /(?:0o|,|;|\s)+/i;
-        const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
+        const tokens = input.split(splitRegex).filter(token => token.length > 0);
         const result = [];
         const octRegex = /^[0-7]+$/;
         for (const token of tokens) {
@@ -110,12 +110,12 @@ function parseByteArrayOct(input) {
 }
 
 function parseByteArrayBin(input) {
-    if (typeof input.value !== 'string') {
+    if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
     try {
         const splitRegex = /(?:0b|,|;|\s)+/i;
-        const tokens = input.value.split(splitRegex).filter(token => token.length > 0);
+        const tokens = input.split(splitRegex).filter(token => token.length > 0);
         const result = [];
         const binRegex = /^[0-1]+$/;
         for (const token of tokens) {
@@ -144,13 +144,13 @@ function parseByteArrayBin(input) {
 }
 
 function parseStringASCII(input) {
-    if (typeof input.value !== 'string') {
+    if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
     try {
         let result = new Array();
-        for (let i = 0; i < input.value.length; i++) {
-            let charCode = input.value.charCodeAt(i);
+        for (let i = 0; i < input.length; i++) {
+            let charCode = input.charCodeAt(i);
             if (charCode < 32 || charCode > 126) {
                 throw new Error(`StringASCII: Invalid non-ASCII character '${input.value[i]}'!`);
             }
@@ -163,11 +163,11 @@ function parseStringASCII(input) {
 }
 
 function parseStringUTF8(input) {
-    if (typeof input.value !== 'string') {
+    if (typeof input !== 'string') {
         throw new TypeError('Input must be a string!');
     }
 
-    const utf8String = input.value.replace(
+    const utf8String = input.replace(
         /[\u0080-\u07ff]/g,  // U+0080 - U+07FF => 2 bytes 110yyyyy, 10zzzzzz
         function(c) {
             var cc = c.charCodeAt(0);
@@ -188,18 +188,20 @@ function parseStringUTF8(input) {
 }
 
 function parseFloat32(input, endianness) {
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
     let floatArray;
     try {
-        floatArray = input.value.trim().split('\n').map(line => {
-            if (!/^-?\d+([.,]\d+)?([eE]-?\d+)?$/.test(line.trim())) {
-                throw new Error(`Invalid float value: '${line}'`);
+        floatArray = input.trim().split('\n').map(line => {
+            if (!/^[+-]?\d+([.,]\d+)?([eE][+-]?\d+)?$/.test(line.trim())) {
+                throw new Error(`Float32: Invalid value: '${line}'!`);
             }
             let parsed = parseFloat(line.replace(',', '.'));
             return parsed;
         });
     } catch (error) {
-        input.style.color = 'red';
-        return { success: false, message: `Invalid float input: '${error.message}'`};
+        return { success: false, message: error.message};
     }
     let buffer = new ArrayBuffer(4);
     let view = new DataView(buffer);
@@ -210,12 +212,25 @@ function parseFloat32(input, endianness) {
             byteArray.push(view.getUint8(j));
         }
     }
-    input.style.color = '';
     return { success: true, result: new Uint8Array(byteArray) };
 }
 
 function parseFloat64(input, endianness) {
-    let floatArray = input.value.trim().split('\n').map(line => parseFloat(line));
+    if (!input) {
+        return { success: true, result: new Uint8Array() };
+    }
+    let floatArray;
+    try {
+        floatArray = input.trim().split('\n').map(line => {
+            if (!/^[+-]?\d+([.,]\d+)?([eE][+-]?\d+)?$/.test(line.trim())) {
+                throw new Error(`Float64: Invalid value: '${line}'!`);
+            }
+            let parsed = parseFloat(line.replace(',', '.'));
+            return parsed;
+        });
+    } catch (error) {
+        return { success: false, message: error.message};
+    }
     let buffer = new ArrayBuffer(8);
     let view = new DataView(buffer);
     let byteArray = [];
@@ -228,10 +243,10 @@ function parseFloat64(input, endianness) {
     return { success: true, result: new Uint8Array(byteArray) };
 }
 
-function parseInt8(input, sign) {
+function parseInt8(input, sign = false) {
     let result;
     try {
-        let values = input.value.trim().split('\n').map(line => {
+        let values = input.trim().split('\n').map(line => {
             let trimmedLine = line.trim();
             if (sign) {
                 if (!/^-?\d+$/.test(trimmedLine)) {
@@ -261,9 +276,9 @@ function parseInt8(input, sign) {
     return { success: true, result: new Uint8Array(result) };
 }
 
-function parseInt16(input, endianness, sign) {
+function parseInt16(input, endianness = 'big', sign = false) {
     try {
-        let result = input.value.trim().split('\n').map(line => {
+        let result = input.trim().split('\n').map(line => {
             let trimmedLine = line.trim();
             if (sign) {
                 if (!/^-?\d+$/.test(trimmedLine)) {
@@ -301,7 +316,7 @@ function parseInt16(input, endianness, sign) {
 
 function parseInt32(input, endianness, sign) {
     try {
-        let result = input.value.trim().split('\n').map(line => {
+        let result = input.trim().split('\n').map(line => {
             let trimmedLine = line.trim();
             if (sign) {
                 if (!/^-?\d+$/.test(trimmedLine)) {
@@ -340,7 +355,7 @@ function parseInt32(input, endianness, sign) {
 
 function parseInt64(input, endianness, sign) {
     try {
-        let result = input.value.trim().split('\n').map(line => {
+        let result = input.trim().split('\n').map(line => {
             let trimmedLine = line.trim();
             if (sign) {
                 if (!/^-?\d+$/.test(trimmedLine)) {
@@ -351,24 +366,24 @@ function parseInt64(input, endianness, sign) {
                     throw new Error(`Uint64: '${trimmedLine}' is not a valid unsigned number!`);
                 }
             }
-            let number = parseInt(trimmedLine, 10);
+            let number = BigInt(trimmedLine);
             if (sign) {
-                if (number < -9223372036854775808 || number > 9223372036854775807) {
+                if (number < -9223372036854775808n || number > 9223372036854775807n) {
                     throw new Error(`Int64: '${trimmedLine}' is out of range (-9223372036854775808 to 9223372036854775807) for signed 64-bit integers!`);
                 }
             } else {
-                if (number < 0 || number > 18446744073709551615) {
+                if (number < 0 || number > 18446744073709551615n) {
                     throw new Error(`Uint64: '${trimmedLine}' is out of range (0 to 18446744073709551615) for unsigned 64-bit integers!`);
                 }
             }
-            let lowByte0 = number & 0xFF;
-            let lowByte1 = (number >> 8) & 0xFF;
-            let lowByte2 = (number >> 16) & 0xFF;
-            let lowByte3 = (number >> 24) & 0xFF;
-            let lowByte4 = (number >> 32) & 0xFF;
-            let lowByte5 = (number >> 40) & 0xFF;
-            let lowByte6 = (number >> 48) & 0xFF;
-            let highByte = (number >> 56) & 0xFF;
+            let lowByte0 = Number(number & 0xFFn);
+            let lowByte1 = Number((number >> 8n) & 0xFFn);
+            let lowByte2 = Number((number >> 16n) & 0xFFn);
+            let lowByte3 = Number((number >> 24n) & 0xFFn);
+            let lowByte4 = Number((number >> 32n) & 0xFFn);
+            let lowByte5 = Number((number >> 40n) & 0xFFn);
+            let lowByte6 = Number((number >> 48n) & 0xFFn);
+            let highByte = Number((number >> 56n) & 0xFFn);
             if (endianness === "little") {
                 return [lowByte0, lowByte1, lowByte2, lowByte3, lowByte4, lowByte5, lowByte6, highByte];
             } else {

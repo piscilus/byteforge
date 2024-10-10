@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let byteArrayPrefix = document.getElementById('bcByteArrayPrefix').checked;
     let byteArraySpace = document.getElementById('bcByteArraySpace').checked;
     let byteArraySepChar = document.querySelector('input[name="bcByteArraySepChar"]:checked').value;
+    let floatSepChar = document.querySelector('input[name="bcFloatSep"]:checked').value;
 
     const bcByteArrayLength = document.querySelectorAll('.bcByteArrayLength');
     const bcStringASCIILength = document.getElementById('bcStringASCIILength');
@@ -53,12 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             element: document.getElementById('bcFloat32'),
             parse: (val) => parseFloat32(val, endiannessFloat),
-            format: (val) => composeFloat32(val, endiannessFloat),
+            format: (val) => composeFloat32(val, endiannessFloat, floatSepChar),
         },
         {
             element: document.getElementById('bcFloat64'),
             parse: (val) => parseFloat64(val, endiannessFloat),
-            format: (val) => composeFloat64(val, endiannessFloat),
+            format: (val) => composeFloat64(val, endiannessFloat, floatSepChar),
         },
         {
             element: document.getElementById('bcUint8'),
@@ -146,10 +147,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const bcFloatSep = document.querySelectorAll('input[name="bcFloatSep"]');
+    bcFloatSep.forEach((radio) => {
+        radio.addEventListener('input', (event) => {
+            floatSepChar = event.target.value;
+            updateAllInputs(-1);
+        });
+    });
+
     inputsConfig.forEach((inputConfig, index) => {
         inputConfig.element.addEventListener('input', () => {
         if (isUpdating || !inputConfig.parse) return;
-        const parsedValue = inputConfig.parse(inputConfig.element);
+        const parsedValue = inputConfig.parse(inputConfig.element.value);
         if (!parsedValue.success) {
             inputConfig.element.style.color = getComputedStyle(document.documentElement).getPropertyValue('--color-err-fg');
             if (parsedValue.message)

@@ -101,7 +101,7 @@ function composeStringUTF8(input, substituteEnable = false, substituteChar = '?'
     return { success: true, result: result };
 }
 
-function composeFloat32(input, endianness) {
+function composeFloat32(input, endianness, decimalSep = '.') {
     if (!(input instanceof Uint8Array)) {
         throw new TypeError("Input must be a Uint8Array.");
     }
@@ -115,13 +115,17 @@ function composeFloat32(input, endianness) {
         for (let j = 0; j < 4; j++) {
             view.setUint8(j, input[i + j]);
         }
-        let float64Value = view.getFloat32(0, endianness === 'little');
-        result.push(float64Value);
+        let float32Value = view.getFloat32(0, endianness === 'little');
+        if (decimalSep === '.') {
+            result.push(float32Value.toExponential());
+        } else {
+            result.push(float32Value.toExponential().replace('.', ','));
+        }
     }
     return { success: true, result: result.join('\n') };
 }
 
-function composeFloat64(input, endianness) {
+function composeFloat64(input, endianness, decimalSep = '.') {
     if (!(input instanceof Uint8Array)) {
         throw new TypeError("Input must be a Uint8Array.");
     }
@@ -136,7 +140,11 @@ function composeFloat64(input, endianness) {
             view.setUint8(j, input[i + j]);
         }
         let float64Value = view.getFloat64(0, endianness === 'little');
-        result.push(float64Value);
+        if (decimalSep === '.') {
+            result.push(float64Value.toExponential());
+        } else {
+            result.push(float64Value.toExponential().replace('.', ','));
+        }
     }
     return { success: true, result: result.join('\n') };
 }
