@@ -20,7 +20,7 @@ function composeByteArrayDec(input, prefix, space, sepChar = '') {
     }
     let result = Array.from(input)
         .map(byte => {
-            let decByte = byte.toString(10);
+            let decByte = byte.toString(10).padStart(3, '0');
             if (prefix) {
                 decByte = '0d' + decByte;
             }
@@ -101,6 +101,25 @@ function composeStringUTF8(input, substituteEnable = false, substituteChar = '?'
     return { success: true, result: result };
 }
 
+function formatFloat(value, decimalSep) {
+    if (isNaN(value)) {
+        return 'NaN';
+    }
+
+    if (!isFinite(value)) {
+        return value < 0 ? '-∞' : '∞';
+    }
+
+    // .toExponential() everything is exponential, e.g., 0e+0
+    // .toLocaleString('en-US') would support -0 and 0 but is not exponential
+    let formattedValue = value;
+    if (decimalSep === ',') {
+        formattedValue = formattedValue.replace('.', ',');
+    }
+
+    return formattedValue;
+}
+
 function composeFloat32(input, endianness, decimalSep = '.') {
     if (!(input instanceof Uint8Array)) {
         throw new TypeError("Input must be a Uint8Array.");
@@ -116,11 +135,7 @@ function composeFloat32(input, endianness, decimalSep = '.') {
             view.setUint8(j, input[i + j]);
         }
         let float32Value = view.getFloat32(0, endianness === 'little');
-        if (decimalSep === '.') {
-            result.push(float32Value.toExponential());
-        } else {
-            result.push(float32Value.toExponential().replace('.', ','));
-        }
+        result.push(formatFloat(float32Value, decimalSep));
     }
     return { success: true, result: result.join('\n') };
 }
@@ -140,11 +155,7 @@ function composeFloat64(input, endianness, decimalSep = '.') {
             view.setUint8(j, input[i + j]);
         }
         let float64Value = view.getFloat64(0, endianness === 'little');
-        if (decimalSep === '.') {
-            result.push(float64Value.toExponential());
-        } else {
-            result.push(float64Value.toExponential().replace('.', ','));
-        }
+        result.push(formatFloat(float64Value, decimalSep));
     }
     return { success: true, result: result.join('\n') };
 }
