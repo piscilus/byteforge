@@ -157,20 +157,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     inputsConfig.forEach((inputConfig, index) => {
         inputConfig.element.addEventListener('input', () => {
-        if (isUpdating || !inputConfig.parse) return;
-        const parsedValue = inputConfig.parse(inputConfig.element.value);
-        if (!parsedValue.success) {
-            inputConfig.element.style.color = getComputedStyle(document.documentElement).getPropertyValue('--color-err-fg');
-            if (parsedValue.message)
-                bcConsole.value = parsedValue.message + '\n';
-            return;
-        }
-        else {
+            if (isUpdating || !inputConfig.parse) return;
+            const parsedValue = inputConfig.parse(inputConfig.element.value);
+            if (!parsedValue.success) {
+                inputConfig.element.style.color = getComputedStyle(document.documentElement).getPropertyValue('--color-err-fg');
+                if (parsedValue.message)
+                    bcConsole.value = parsedValue.message + '\n';
+                return;
+            }
             inputConfig.element.style.color = 'inherit';
             inputConfig.element.style.backgroundColor = 'inherit';
-        }
-        centralArrayOfInt = parsedValue.result;
-        updateAllInputs(index);
+            centralArrayOfInt = parsedValue.result;
+            updateAllInputs(index);
         });
     });
 
