@@ -16,7 +16,6 @@ types.
 
 - [ ] max length for the form elements?
 - [ ] testing...
-- [ ] endianness for byte array (swap)
 - [ ] improve error messages / logging
 - [ ] final layout (HTML/CSS)
 - [ ] noscript HTML tag
@@ -24,4 +23,5 @@ types.
 
 ## Known issues
 
-- [ ] Update form element style on clear and theme switch
+- [x] Update form element style on clear and theme switch
+- [x] clear all does not reset the size text

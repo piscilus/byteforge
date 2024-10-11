@@ -203,5 +203,18 @@ document.addEventListener('DOMContentLoaded', () => {
         isUpdating = false;
     }
 
+    function clearAll() {
+        centralArrayOfInt = new Uint8Array();
+        updateAllInputs(-1);
+    }
+
+    window.callClearAll = function() {
+        clearAll();
+    }
+
+    window.callUpdateAll = function() {
+        updateAllInputs(-1);
+    }
+
     updateAllInputs(-1);
 });

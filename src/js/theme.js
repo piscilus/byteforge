@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateButton({ buttonEl: button, isDark: newTheme === "dark" });
         updateThemeOnHtmlEl({ theme: newTheme });
         currentThemeSetting = newTheme;
+        callUpdateAll();
     });
 
     var coll = document.getElementsByClassName("collapsible");
