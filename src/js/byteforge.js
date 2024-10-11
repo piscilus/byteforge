@@ -165,8 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     bcConsole.value = parsedValue.message + '\n';
                 return;
             }
-            inputConfig.element.style.color = 'inherit';
-            inputConfig.element.style.backgroundColor = 'inherit';
+            inputConfig.element.style.color = getComputedStyle(document.documentElement).getPropertyValue('--color-fg');
             centralArrayOfInt = parsedValue.result;
             updateAllInputs(index);
         });
@@ -178,10 +177,11 @@ document.addEventListener('DOMContentLoaded', () => {
         inputsConfig.forEach((inputConfig, index) => {
             if (index === excludeIndex || !inputConfig.format) return;
             out = inputConfig.format(centralArrayOfInt);
-            inputConfig.element.style.color = 'inherit';
+            inputConfig.element.style.color = getComputedStyle(document.documentElement).getPropertyValue('--color-fg');
             if (out.success) {
                 inputConfig.element.value = out.result;
-                inputConfig.element.style.backgroundColor = 'inherit';
+                if (inputConfig.element !== document.activeElement)
+                    inputConfig.element.style.backgroundColor = '';
             } else {
                 inputConfig.element.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-err-bg');
                 // if (out.message)

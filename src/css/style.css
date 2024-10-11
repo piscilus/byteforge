@@ -1,10 +1,13 @@
 :root, [data-theme="light"] {
     --color-bg: #ffffff;
-    --color-fg: #000000;
+    --color-fg: #222222;
+    --color-fg2: #3f3f3f;
     --color-symbol: invert(0%) sepia(94%) saturate(0%) hue-rotate(280deg) brightness(97%) contrast(97%);
     --color-link: #4973FB;
     --color-link-hover: #B7386E;
+    --color-bgform: #fff;
     --color-bg2: #f2f2f2;
+    --color-bg3: #d4d4d4;
     --color-bghl: #fff6e6;
     --color-border: #bbb;
     --color-err-fg: #e62e00;
@@ -15,24 +18,29 @@
 [data-theme="dark"] {
     --color-bg: #111111;
     --color-fg: #D4D4D4;
+    --color-fg2: #a1a1a1;
     --color-logo: invert(97%) sepia(100%) saturate(0%) hue-rotate(18deg) brightness(102%) contrast(105%);
     --color-link: #4973FB;
     --color-link-hover: #FACA30;
+    --color-bgform: #111111;
     --color-bg2: #171717;
-    --color-bghl: #1a1a00;
-    --color-border: #222222;
+    --color-bg3: #222222;
+    --color-bghl: #141400;
+    --color-border: #333333;
     --color-err-fg: #ff471a;
     --color-err-bg: #1a0500;
     --color-bg-tooltip: #222222;
 }
 
-.logo {
-    filter: var(--color-logo);
-}
-/* https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-an-svg-element */
-
 html {
     margin: 0;
+    font-size: 16px;
+}
+
+@media only screen and (max-width: 600px) {
+    html {
+        font-size: 14px;
+    }
 }
 
 body {
@@ -70,10 +78,15 @@ header div img {
     vertical-align: middle;
 }
 
+.logo {
+    filter: var(--color-logo);
+}
+/* https://stackoverflow.com/questions/22252472/how-can-i-change-the-color-of-an-svg-element */
+
 header div h1 {
     margin: 0;
     padding: 0;
-    font-size: 3rem;
+    font-size:2.8rem;
     font-weight: 800;
 }
 
@@ -102,9 +115,14 @@ table {
     width: 100%;
 }
 
+td {
+    font-size: 0.9rem;
+}
+
 label {
     font-size: 0.8rem;
     font-weight: bold;
+    color: var(--color-fg2);
 }
 
 .bcByteArrayLength, #bcStringASCIILength, #bcStringUTF8Length {
@@ -115,21 +133,25 @@ input, select, textarea {
     font-family: monospace;
     font-size: 0.9rem;
     border: 1px solid var(--color-border);
-    background-color: var(--color-bg);
+    background-color: var(--color-bgform);
     color: var(--color-fg);
-    border-radius: 4px;
+    border-radius: 6px;
+    caret-color: var(--color-fg);
 }
 
 fieldset {
     background-color: var(--color-bg2);
     border: 1px solid var(--color-border);
     margin: 0.5rem 0 0.5rem 0;
+    border-radius: 6px;
 }
 
 legend {
     border: 1px solid var(--color-border);
-    background-color: var(--color-bg2);
+    background-color: var(--color-bg3);
     font-weight: bold;
+    border-radius: 6px;
+    padding: 0.1rem 0.5rem 0.1rem 0.5rem;
 }
 
 input[type=text] {
@@ -144,17 +166,13 @@ input[type=text]:read-write:focus {
 textarea {
     box-sizing: border-box;
     outline: none;
-    resize: vertical;
+    resize: none;
     width: 100%;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
 }
 
 textarea:focus {
     background-color: var(--color-bghl);
-}
-
-summary {
-    cursor: pointer;
 }
 
 [data-theme-toggle] {
