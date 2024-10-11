@@ -112,7 +112,7 @@ function formatFloat(value, decimalSep) {
 
     // .toExponential() everything is exponential, e.g., 0e+0
     // .toLocaleString('en-US') would support -0 and 0 but is not exponential
-    let formattedValue = value;
+    let formattedValue = value.toString();
     if (decimalSep === ',') {
         formattedValue = formattedValue.replace('.', ',');
     }

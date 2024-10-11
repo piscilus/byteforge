@@ -1,6 +1,6 @@
 // compose.test.js
 
-const { composeByteArrayHex, composeFloat64 } = require('../src/js/compose');
+const { composeByteArrayHex, composeFloat64, composeFloat32 } = require('../src/js/compose');
 
 describe('composeByteArrayHex', () => {
     test('converts byte array to hex string without any formatting', () => {
@@ -61,6 +61,19 @@ describe('composeByteArrayHex', () => {
         expect(() => composeByteArrayHex(input, false, false, '')).toThrow(TypeError);
     });
 
+});
+
+describe('composeFloat32', () => {
+    test('expect a 42.15625 with . separator for big endian', () => {
+        const input = new Uint8Array([0x42, 0x28, 0xA0, 0x00]);
+        const output = composeFloat32(input, 'big', '.');
+        expect(output).toEqual({ success: true, result: '42.15625' });
+    });
+    test('expect a 42,156259 with , separator for big endian', () => {
+        const input = new Uint8Array([0x42, 0x28, 0xA0, 0x00]);
+        const output = composeFloat32(input, 'big', ',');
+        expect(output).toEqual({ success: true, result: '42,15625' });
+    });
 });
 
 describe('composeFloat64', () => {
