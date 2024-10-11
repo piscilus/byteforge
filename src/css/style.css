@@ -47,7 +47,7 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0 0.6rem 0 0.6rem;
-    font-family: sans-serif;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     background-color: var(--color-bg);
     color: var(--color-fg);
 }
@@ -88,6 +88,7 @@ header div h1 {
     padding: 0;
     font-size:2.8rem;
     font-weight: 800;
+    text-decoration: underline;
 }
 
 .header-right {
