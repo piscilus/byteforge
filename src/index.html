@@ -20,9 +20,31 @@ integers (8 to 64-bit).">
 <header>
 <div><img src="img/byteforge_logo.svg" class="logo" title="Byte Forge" alt="Byte Forge logo"></div>
 <div><h1>Byte Forge</h1></div>
-<div class="header-right"><button type="button" data-theme-toggle aria-label="&#x263C;" title="toggle light/dark theme">&#x263C;</button></div>
+<div class="header-right">
+<button type="button" class="help-btn" id="helpBtn" title="Show help">?</button>
+<button type="button" data-theme-toggle aria-label="&#x263C;" title="Toggle light/dark theme">&#x263C;</button>
+</div>
 </header>
 <main>
+<div class="help-overlay" id="helpOverlay">
+<div class="help-content">
+<h2>About</h2>
+<p><strong>Byte Forge</strong> allows you to easily convert data between various formats. Whether you're working with byte arrays (in hex, decimal, octal, or binary), ASCII or UTF-8 strings, 32-bit/64-bit floating-point numbers, or signed/unsigned integers (8 to 64-bit), this tool will seamlessly convert your input to all supported formats. Simply enter your data in any format, and instantly view its equivalent representation across all others. Perfect for developers, engineers, or anyone needing quick and accurate data format conversions!</p>
+<h2>Help Information</h2>
+<h3>General</h3>
+<p>The active input element is highlighted with a yellow background color. If the input contains invalid or not enough characters, the text color turns red and no conversion is performed. Details about the error are shown in the console. The other elements are highlighted by a red background color if the input data is not valid for the particular output format, e.g., not enough bytes.</p>
+<h3>Tooltips</h3>
+<p>The page provides tooltips with further information for almost all elements. Simply hover the cursor and wait for the tooltip to show up.</p>
+<h3>Input</h3>
+<p>The input for byte arrays must be in a form so that values for individual bytes can be extracted. This can be achieved by either the use of separators (space, comma, semicolon, prefix) or by providing the amount of digits for the particular numeral system, e.g., three digits for decimal (0..255): 123042007 = [123, 42, 7]. A combination is also possible.</p>
+<p>The endianness (byte order) for numerical values that you want to enter must be selected beforehand. If it is the output of a conversion, it can be changed any time.</p>
+<p>Except for the endianness, the format settings apply only for output.
+<h3>Special Notes</h3>
+<p>The non-printable characters of an ASCII string output are replaced by the Unicode character 'white square' (U+25A1) which is of course not ASCII. A substitution character can be defined to replace this character. The UTF-8 string output is currently not filtered.</p>
+<h2>Privacy</h2>
+<p>The data from the form is not transferred to the server, but only processed locally in the browser.</p>
+</div>
+</div>
 <form accept-charset="utf-8" target="_self">
 <fieldset>
 <legend class="collapsible">Byte Array</legend>
@@ -86,8 +108,8 @@ integers (8 to 64-bit).">
 <div class="content">
 <table>
 <tr>
-<td><label for="bcFloat32" data-tooltip title="Single precision (32-bit) floating point number according to IEEE 754. One number pre line.">32-bit</label></td>
-<td><label for="bcFloat64" data-tooltip title="Double precision (64-bit) floating point number according to IEEE 754. One number pre line.">64-bit</label></td>
+<td><label for="bcFloat32" data-tooltip title="Single precision (32-bit) floating point number according to IEEE 754. One number per line.">32-bit</label></td>
+<td><label for="bcFloat64" data-tooltip title="Double precision (64-bit) floating point number according to IEEE 754. One number per line.">64-bit</label></td>
 </tr>
 <tr>
 <td><textarea id="bcFloat32" rows="5"></textarea></td>
@@ -117,14 +139,14 @@ integers (8 to 64-bit).">
 <td colspan="4"><strong>Signed</strong></td>
 </tr>
 <tr>
-<td><label for="bcUint8" data-tooltip title="Unsigned 8-bit integer.&#10;&#183; values: 0..255&#10;One number pre line.">8-bit</label></td>
-<td><label for="bcUint16" data-tooltip title="Unsigned 16-bit integer.&#10;&#183; values: 0..65,535&#10;One number pre line.">16-bit</label></td>
-<td><label for="bcUint32" data-tooltip title="Unsigned 32-bit integer.&#10;&#183; values: 0..4,294,967,295&#10;One number pre line.">32-bit</label></td>
-<td><label for="bcUint64" data-tooltip title="Unsigned 64-bit integer.&#10;&#183; values: 0..18,446,744,073,709,551,615&#10;One number pre line.">64-bit</label></td>
-<td><label for="bcInt8" data-tooltip title="Signed 8-bit integer.&#10;&#183; values: -128..127&#10;One number pre line.">8-bit</label></td>
-<td><label for="bcInt16" data-tooltip title="Signed 8-bit integer.&#10;&#183; values: -32,768..32,767&#10;One number pre line.">16-bit</label></td>
-<td><label for="bcInt32" data-tooltip title="Signed 32-bit integer.&#10;&#183; values: -2,147,483,648..2,147,483,647&#10;One number pre line.">32-bit</label></td>
-<td><label for="bcInt64" data-tooltip title="Signed 64-bit integer.&#10;&#183; values: -9,223,372,036,854,775,808..9,223,372,036,854,775,807&#10;One number pre line.">64-bit</label></td>
+<td><label for="bcUint8" data-tooltip title="Unsigned 8-bit integer.&#10;&#183; values: 0..255&#10;One number per line.">8-bit</label></td>
+<td><label for="bcUint16" data-tooltip title="Unsigned 16-bit integer.&#10;&#183; values: 0..65,535&#10;One number per line.">16-bit</label></td>
+<td><label for="bcUint32" data-tooltip title="Unsigned 32-bit integer.&#10;&#183; values: 0..4,294,967,295&#10;One number per line.">32-bit</label></td>
+<td><label for="bcUint64" data-tooltip title="Unsigned 64-bit integer.&#10;&#183; values: 0..18,446,744,073,709,551,615&#10;One number per line.">64-bit</label></td>
+<td><label for="bcInt8" data-tooltip title="Signed 8-bit integer.&#10;&#183; values: -128..127&#10;One number per line.">8-bit</label></td>
+<td><label for="bcInt16" data-tooltip title="Signed 8-bit integer.&#10;&#183; values: -32,768..32,767&#10;One number per line.">16-bit</label></td>
+<td><label for="bcInt32" data-tooltip title="Signed 32-bit integer.&#10;&#183; values: -2,147,483,648..2,147,483,647&#10;One number per line.">32-bit</label></td>
+<td><label for="bcInt64" data-tooltip title="Signed 64-bit integer.&#10;&#183; values: -9,223,372,036,854,775,808..9,223,372,036,854,775,807&#10;One number per line.">64-bit</label></td>
 </tr>
 <tr>
 <td><textarea id="bcUint8"  rows="5"></textarea></td>

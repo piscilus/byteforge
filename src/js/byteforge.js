@@ -216,5 +216,18 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAllInputs(-1);
     }
 
+    const helpBtn = document.getElementById('helpBtn');
+    const helpOverlay = document.getElementById('helpOverlay');
+
+    helpBtn.addEventListener('click', function() {
+        helpOverlay.classList.toggle('active');
+    });
+
+    helpOverlay.addEventListener('click', function(e) {
+        if (e.target === helpOverlay) {
+            helpOverlay.classList.remove('active');
+        }
+    });
+
     updateAllInputs(-1);
 });
