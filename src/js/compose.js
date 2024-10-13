@@ -68,10 +68,14 @@ function composeASCIIString(input, substituteEnable = false, substituteChar = '?
     }
     let result = Array.from(input)
         .map(byte => {
-            if (substituteEnable) {
-                return (byte >= 32 && byte <= 126) ? String.fromCharCode(byte) : substituteChar;
-            } else {
+            if (byte >= 32 && byte <= 126) {
                 return String.fromCharCode(byte);
+            } else {
+                if (substituteEnable) {
+                    return substituteChar;
+                } else {
+                    return '\u25A1';
+                }
             }
         }).join('');
     if (result.length <= 0) {
