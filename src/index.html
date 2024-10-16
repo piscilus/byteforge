@@ -68,10 +68,16 @@ integers (8 to 64-bit).">
 <td><textarea id="bcByteArrayBin" rows="4"></textarea></td>
 </tr>
 <tr><td colspan="2">
+<div class="options">
+<div class="option">
 <label for="bcByteArrayPrefix" data-tooltip title="Add prefixes to identify the numeral system (0x/0d/0o/0b). Prefix is applied per byte.">Prefix:</label>
-<input type="checkbox" id="bcByteArrayPrefix" value="0x"> &nbsp;
+<input type="checkbox" id="bcByteArrayPrefix" value="0x">
+</div>
+<div class="option">
 <label for="bcByteArraySpace" data-tooltip title="Add a space/blank to separate bytes.">Blank separator:</label>
-<input type="checkbox" id="bcByteArraySpace" value="space"> &nbsp;
+<input type="checkbox" id="bcByteArraySpace" value="space">
+</div>
+<div class="option">
 <label data-tooltip title="Add (additional) separator.">Separator:</label>
 <input type="radio" id="bcByteArraySepNo" name="bcByteArraySepChar" value="" checked>
 <label for="bcByteArraySepNo" data-tooltip title="No (additional) separator.">None</label>
@@ -79,6 +85,8 @@ integers (8 to 64-bit).">
 <label for="bcByteArraySepComma" data-tooltip title="Add a comma to separate bytes.">Comma</label>
 <input type="radio" id="bcByteArraySepSemicolon" name="bcByteArraySepChar" value=";">
 <label for="bcByteArraySepSemicolon" data-tooltip title="Add a semicolon to separate bytes.">Semicolon</label>
+</div>
+</div>
 </td></tr>
 </table>
 </div>
@@ -96,10 +104,16 @@ integers (8 to 64-bit).">
 <td><textarea id="bcStringUTF8"  rows="5"></textarea></td>
 </tr>
 <tr><td colspan="2">
+<div class="options">
+<div class="option">
 <label for="bcStringSubstituteEnable" data-tooltip title="Enable character substitution for non-printable characters.">Enable substitution:</label>
-<input type="checkbox" id="bcStringSubstituteEnable"> &nbsp;
+<input type="checkbox" id="bcStringSubstituteEnable">
+</div>
+<div class="option">
 <label for="bcStringSubstituteChar" data-tooltip title="Define the substitution character. Empty means that the non-printable characters are omitted.">Substitute character:</label>
-<input id="bcStringSubstituteChar" type="text" size="2" maxlength="1" value="?">
+<input type="text" id="bcStringSubstituteChar" size="2" maxlength="1" value="?">
+</div>
+</div>
 </td></tr>
 </table>
 </div>
@@ -117,16 +131,22 @@ integers (8 to 64-bit).">
 <td><textarea id="bcFloat64" rows="5"></textarea></td>
 </tr>
 <tr><td colspan="2">
+<div class="options">
+<div class="option">
 <label for="bcEndiannessFloat" data-tooltip title="Order of bytes.&#10;&#183; Big-endian: most-significant byte at lowest memory address, i.e. first.&#10;&#183; Little-endian: most-significant byte at highest memory address, i.e. last.">Endianness:</label>
 <select id="bcEndiannessFloat">
 <option value="big" selected>big-endian</option>
 <option value="little">little-endian</option>
-</select> &nbsp;
+</select>
+</div>
+<div class="option">
 <label data-tooltip title="Select the output format for a decimal separator.">Decimal separator:</label>
 <input type="radio" id="bcFloatSepComma" name="bcFloatSep" value=",">
 <label for="bcFloatSepComma" data-tooltip title="Comma separator, e.g., 3,1415926">Comma</label>
 <input type="radio" id="bcFloatSepDot" name="bcFloatSep" value="." checked>
 <label for="bcFloatSepDot" data-tooltip title="Semicolon separator, e.g., 3.1415926">Dot</label>
+</div>
+</div>
 </td></tr>
 </table>
 </div>
@@ -160,11 +180,15 @@ integers (8 to 64-bit).">
 <td><textarea id="bcInt64"  rows="5"></textarea></td>
 </tr>
 <tr><td colspan="8">
+<div class="options">
+<div class="option">
 <label for="bcEndiannessInt" data-tooltip title="Order of bytes.&#10;&#183; Big-endian: most-significant byte at lowest memory address, i.e. first.&#10;&#183; Little-endian: most-significant byte at highest memory address, i.e. last.">Endianness:</label>
 <select id="bcEndiannessInt">
 <option value="big" selected>big-endian</option>
 <option value="little">little-endian</option>
 </select>
+</div>
+</div>
 </td></tr>
 </table>
 </div>

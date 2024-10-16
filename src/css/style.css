@@ -176,6 +176,17 @@ textarea:focus {
     background-color: var(--color-bghl);
 }
 
+.options {
+    display: inline-flex;
+    gap: 0.4rem;
+}
+
+.option {
+    background-color: var(--color-bg3);
+    border-radius: 0.4rem;
+    padding: 0.2rem;
+}
+
 .header-right button {
     background-color: var(--color-bg2);
     border: 1px solid var(--color-border);
