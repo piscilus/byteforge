@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     let centralArrayOfInt = new Uint8Array();
 
+    let bg_err;
+    let bg_ok;
+    let bg_hl;
+    let fg_err;
+    let fg_ok;
+
+    updateColors();
+
     const bcConsole = document.getElementById('bcConsole');
     bcConsole.value = '';
 
@@ -15,10 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let byteArraySpace = document.getElementById('bcByteArraySpace').checked;
     let byteArraySepChar = document.querySelector('input[name="bcByteArraySepChar"]:checked').value;
     let floatSepChar = document.querySelector('input[name="bcFloatSep"]:checked').value;
-
-    const bcByteArrayLength = document.querySelectorAll('.bcByteArrayLength');
-    const bcStringASCIILength = document.getElementById('bcStringASCIILength');
-    const bcStringUTF8Length = document.getElementById('bcStringUTF8Length');
 
     const inputsConfig = [
         {
@@ -103,6 +107,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
+    const bcByteArrayLength = document.querySelectorAll('.bcByteArrayLength');
+    const bcStringLength = [
+        {
+            len: document.getElementById('bcStringASCIILength'),
+            src: document.getElementById('bcStringASCII')
+        },
+        {
+            len: document.getElementById('bcStringUTF8Length'),
+            src: document.getElementById('bcStringUTF8')
+        }
+    ];
+
     const bcEndiannessInt = document.getElementById('bcEndiannessInt');
     bcEndiannessInt.addEventListener('change', (event) => {
         endiannessInt = event.target.value;
@@ -160,12 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isUpdating || !inputConfig.parse) return;
             const parsedValue = inputConfig.parse(inputConfig.element.value);
             if (!parsedValue.success) {
-                inputConfig.element.style.color = getComputedStyle(document.documentElement).getPropertyValue('--color-err-fg');
+                inputConfig.element.style.color = fg_err;
                 if (parsedValue.message)
                     bcConsole.value = parsedValue.message + '\n';
                 return;
             }
-            inputConfig.element.style.color = getComputedStyle(document.documentElement).getPropertyValue('--color-fg');
+            inputConfig.element.style.color = fg_ok;
             centralArrayOfInt = parsedValue.result;
             updateAllInputs(index);
         });
@@ -175,28 +191,39 @@ document.addEventListener('DOMContentLoaded', () => {
         isUpdating = true;
         bcConsole.value = '';
         inputsConfig.forEach((inputConfig, index) => {
-            if (index === excludeIndex || !inputConfig.format) return;
+            if (inputConfig.element === document.activeElement) {
+                inputConfig.element.style.backgroundColor = bg_hl;
+            } else {
+                inputConfig.element.style.backgroundColor = bg_ok;
+            }
+            if (index === excludeIndex || !inputConfig.format) return; // skip
             out = inputConfig.format(centralArrayOfInt);
-            inputConfig.element.style.color = getComputedStyle(document.documentElement).getPropertyValue('--color-fg');
+            inputConfig.element.style.color = fg_ok;
             if (out.success) {
                 inputConfig.element.value = out.result;
-                if (inputConfig.element !== document.activeElement)
-                    inputConfig.element.style.backgroundColor = '';
             } else {
-                inputConfig.element.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-err-bg');
-                // if (out.message)
-                //    bcConsole.value += out.message + '\n';
+                inputConfig.element.style.backgroundColor = bg_err;
                 inputConfig.element.value = '';
             }
         });
 
-        bcByteArrayLength.forEach(span => {
+        bcByteArrayLength.forEach((element) => {
             if (centralArrayOfInt.length <= 0) {
-                span.innerHTML = "";
+                element.innerHTML = "";
             } else if (centralArrayOfInt.length == 1) {
-                span.innerHTML = `(${centralArrayOfInt.length} byte)`;
+                element.innerHTML = `(${centralArrayOfInt.length} byte)`;
             } else {
-                span.innerHTML = `(${centralArrayOfInt.length} bytes)`;
+                element.innerHTML = `(${centralArrayOfInt.length} bytes)`;
+            }
+        });
+
+        bcStringLength.forEach((element) => {
+            if (element.src.value.length <= 0) {
+                element.len.innerHTML = "";
+            } else if (centralArrayOfInt.length == 1) {
+                element.len.innerHTML = `(${element.src.value.length} character)`;
+            } else {
+                element.len.innerHTML = `(${element.src.value.length} characters)`;
             }
         });
 
@@ -208,11 +235,20 @@ document.addEventListener('DOMContentLoaded', () => {
         updateAllInputs(-1);
     }
 
+    function updateColors() {
+        bg_err = getComputedStyle(document.documentElement).getPropertyValue('--color-err-bg');
+        bg_ok = getComputedStyle(document.documentElement).getPropertyValue('--color-bgform');
+        bg_hl = getComputedStyle(document.documentElement).getPropertyValue('--color-bghl');
+        fg_err = getComputedStyle(document.documentElement).getPropertyValue('--color-err-fg');
+        fg_ok = getComputedStyle(document.documentElement).getPropertyValue('--color-fg');
+    }
+
     window.callClearAll = function() {
         clearAll();
     }
 
     window.callUpdateAll = function() {
+        updateColors();
         updateAllInputs(-1);
     }
 
