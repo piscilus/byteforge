@@ -10,10 +10,10 @@ ASCII or UTF-8 strings, 32-bit/64-bit floating-point numbers, or signed/unsigned
 integers (8 to 64-bit).">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="./css/style.css">
+<script src="./js/theme.js"></script>
 <script src="./js/compose.js"></script>
 <script src="./js/parse.js"></script>
 <script src="./js/byteforge.js"></script>
-<script src="./js/theme.js"></script>
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
 </head>
 <body>
@@ -39,6 +39,7 @@ integers (8 to 64-bit).">
 <p>The input for byte arrays must be in a form so that values for individual bytes can be extracted. This can be achieved by either the use of separators (space, comma, semicolon, prefix) or by providing the amount of digits for the particular numeral system, e.g., three digits for decimal (0..255): 123042007 = [123, 42, 7]. A combination is also possible.</p>
 <p>The endianness (byte order) for numerical values that you want to enter must be selected beforehand. If it is the output of a conversion, it can be changed any time.</p>
 <p>Except for the endianness, the format settings apply only for output.
+<p>Floating-point numbers support the input of +/-inf for infinity (case insensitive). Examples: "+inf", "inf", "-inf", "InF".</p>
 <h3>Special Notes</h3>
 <p>The non-printable characters of an ASCII string output are replaced by the Unicode character 'white square' (U+25A1) which is of course not ASCII. A substitution character can be defined to replace this character. The UTF-8 string output is currently not filtered.</p>
 <h2>Privacy</h2>
@@ -108,8 +109,8 @@ integers (8 to 64-bit).">
 <div class="content">
 <table>
 <tr>
-<td><label for="bcFloat32" data-tooltip title="Single precision (32-bit) floating point number according to IEEE 754. One number per line.">32-bit</label></td>
-<td><label for="bcFloat64" data-tooltip title="Double precision (64-bit) floating point number according to IEEE 754. One number per line.">64-bit</label></td>
+<td><label for="bcFloat32" data-tooltip title="Single-precision floating-point number (32-bit) according to IEEE 754 (binary32). One number per line.">32-bit</label></td>
+<td><label for="bcFloat64" data-tooltip title="Double-precision floating-point number (64-bit) according to IEEE 754 (binary64). One number per line.">64-bit</label></td>
 </tr>
 <tr>
 <td><textarea id="bcFloat32" rows="5"></textarea></td>

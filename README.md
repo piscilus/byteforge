@@ -18,3 +18,4 @@ types.
 - [ ] testing...
 - [ ] improve error messages / logging
 - [ ] noscript HTML tag
+- [ ] sNaN, qNan input/output (incl. sign)

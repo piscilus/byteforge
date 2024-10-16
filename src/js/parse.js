@@ -211,14 +211,25 @@ function parseFloat32(input, endianness) {
     if (!input) {
         return { success: true, result: new Uint8Array() };
     }
-    let floatArray;
+    let floatArray = [];
     try {
-        floatArray = input.trim().split('\n').map(line => {
-            if (!/^[+-]?\d+([.,]\d+)?([eE][+-]?\d+)?$/.test(line.trim())) {
-                throw new Error(`Float32: Invalid value: '${line}'!`);
+        const lines = input.split('\n');
+        lines.forEach((line) => {
+            const trimmedLine = line.trim();
+            if (trimmedLine === '') return;
+            if (/^\+?inf$/i.test(trimmedLine)) {
+                floatArray.push(Infinity);
+                console.log('Special treatment for +Inf');
+            } else if (/^-inf$/i.test(trimmedLine)) {
+                floatArray.push(-Infinity);
+                console.log('Special treatment for -Inf');
+            } else {
+                if (!/^[+-]?\d+([.,]\d+)?([eE][+-]?\d+)?$/.test(trimmedLine)) {
+                    throw new Error(`Float32: Invalid value: '${line}'!`);
+                }
+                let parsedValue = parseFloat(line.replace(',', '.'));
+                floatArray.push(parsedValue);
             }
-            let parsed = parseFloat(line.replace(',', '.'));
-            return parsed;
         });
     } catch (error) {
         return { success: false, message: error.message};
@@ -242,14 +253,25 @@ function parseFloat64(input, endianness) {
     if (!input) {
         return { success: true, result: new Uint8Array() };
     }
-    let floatArray;
+    let floatArray = [];
     try {
-        floatArray = input.trim().split('\n').map(line => {
-            if (!/^[+-]?\d+([.,]\d+)?([eE][+-]?\d+)?$/.test(line.trim())) {
-                throw new Error(`Float64: Invalid value: '${line}'!`);
+        const lines = input.split('\n');
+        lines.forEach((line) => {
+            const trimmedLine = line.trim();
+            if (trimmedLine === '') return;
+            if (/^\+?inf$/i.test(trimmedLine)) {
+                floatArray.push(Infinity);
+                console.log('Special treatment for +Inf');
+            } else if (/^-inf$/i.test(trimmedLine)) {
+                floatArray.push(-Infinity);
+                console.log('Special treatment for -Inf');
+            } else {
+                if (!/^[+-]?\d+([.,]\d+)?([eE][+-]?\d+)?$/.test(trimmedLine)) {
+                    throw new Error(`Float64: Invalid value: '${line}'!`);
+                }
+                let parsedValue = parseFloat(line.replace(',', '.'));
+                floatArray.push(parsedValue);
             }
-            let parsed = parseFloat(line.replace(',', '.'));
-            return parsed;
         });
     } catch (error) {
         return { success: false, message: error.message};

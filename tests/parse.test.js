@@ -7,6 +7,7 @@ const {
     parseInt16,
     parseInt32,
     parseInt64,
+    parseFloat32,
     parseFloat64
 } = require('../src/js/parse');
 
@@ -526,6 +527,59 @@ describe('parseInt64', () => {
 
 });
 
+describe('parseFloat32', () => {
+    let value;
+
+    test('parses valid representative for (positive) infinity without sign symbol in big endian', () => {
+        value = 'inf';
+        const output = parseFloat32(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x7F, 0x80, 0x00, 0x00]) });
+    });
+
+    test('parses valid representative for (positive) infinity with sign symbol in big endian', () => {
+        value = '+inf';
+        const output = parseFloat32(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x7F, 0x80, 0x00, 0x00]) });
+    });
+
+    test('parses valid representative for (positive) infinity with sign symbol and alternate capitalization in big endian', () => {
+        value = '+Inf';
+        const output = parseFloat32(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x7F, 0x80, 0x00, 0x00]) });
+    });
+
+    test('parses valid representative for (positive) infinity with sign symbol and full capitalization in big endian', () => {
+        value = '+INF';
+        const output = parseFloat32(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x7F, 0x80, 0x00, 0x00]) });
+    });
+
+    test('parses invalid representative for (positive) infinity in big endian', () => {
+        value = '+IMF';
+        const output = parseFloat32(value, 'big');
+        expect(output.success).toEqual(false);
+    });
+
+    test('parses valid representative for (negative) infinity with sign symbol in big endian', () => {
+        value = '-inf';
+        const output = parseFloat32(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0xFF, 0x80, 0x00, 0x00]) });
+    });
+
+    test('parses valid representative for (positive) infinity with sign symbol in little endian', () => {
+        value = '+inf';
+        const output = parseFloat32(value, 'little');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x00, 0x00, 0x80, 0x7F]) });
+    });
+
+    test('parses valid representative for (negative) infinity with sign symbol in little endian', () => {
+        value = '-inf';
+        const output = parseFloat32(value, 'little');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x00, 0x00, 0x80, 0xFF]) });
+    });
+
+});
+
 describe('parseFloat64', () => {
     let value;
 
@@ -574,4 +628,53 @@ describe('parseFloat64', () => {
         const output = parseFloat64(value, 'little');
         expect(output).toEqual({ success: true, result: new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x37, 0x40]) });
     });
+
+    test('parses valid representative for (positive) infinity without sign symbol in big endian', () => {
+        value = 'inf';
+        const output = parseFloat64(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]) });
+    });
+
+    test('parses valid representative for (positive) infinity with sign symbol in big endian', () => {
+        value = '+inf';
+        const output = parseFloat64(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]) });
+    });
+
+    test('parses valid representative for (positive) infinity with sign symbol and alternate capitalization in big endian', () => {
+        value = '+Inf';
+        const output = parseFloat64(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]) });
+    });
+
+    test('parses valid representative for (positive) infinity with sign symbol and full capitalization in big endian', () => {
+        value = '+INF';
+        const output = parseFloat64(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x7F, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]) });
+    });
+
+    test('parses invalid representative for (positive) infinity in big endian', () => {
+        value = '+IMF';
+        const output = parseFloat64(value, 'big');
+        expect(output.success).toEqual(false);
+    });
+
+    test('parses valid representative for (negative) infinity with sign symbol in big endian', () => {
+        value = '-inf';
+        const output = parseFloat64(value, 'big');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0xFF, 0xF0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]) });
+    });
+
+    test('parses valid representative for (positive) infinity with sign symbol in little endian', () => {
+        value = '+inf';
+        const output = parseFloat64(value, 'little');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF0, 0x7F]) });
+    });
+
+    test('parses valid representative for (negative) infinity with sign symbol in little endian', () => {
+        value = '-inf';
+        const output = parseFloat64(value, 'little');
+        expect(output).toEqual({ success: true, result: new Uint8Array([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF0, 0xFF]) });
+    });
+
 });

@@ -111,7 +111,7 @@ function formatFloat(value, decimalSep) {
     }
 
     if (!isFinite(value)) {
-        return value < 0 ? '-∞' : '∞';
+        return value < 0 ? '-Inf' : '+Inf';
     }
 
     // .toExponential() everything is exponential, e.g., 0e+0
