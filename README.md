@@ -17,5 +17,4 @@ types.
 - [ ] max length for the form elements?
 - [ ] testing...
 - [ ] improve error messages / logging
-- [ ] noscript HTML tag
 - [ ] sNaN, qNan input/output (incl. sign)

@@ -1,5 +1,7 @@
 /* https://dev.to/whitep4nth3r/the-best-lightdark-mode-theme-toggle-in-javascript-368f */
 document.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.js-enabled').style.display = 'block';
+
     function calculateSettingAsThemeString({ localStorageTheme, systemSettingDark }) {
         if (localStorageTheme !== null) {
             return localStorageTheme;

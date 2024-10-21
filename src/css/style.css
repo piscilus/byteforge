@@ -52,6 +52,10 @@ body {
     color: var(--color-fg);
 }
 
+.js-enabled {
+    display: none;
+}
+
 a {
     color: var(--color-link);
 }
